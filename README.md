@@ -1,0 +1,1 @@
+A Web Application that will simulate a wide array of variables in a nation. The current goal is to create an web application that will allow you to make an account and create a country with randomized settings and attempt to grow it through a couple of options.
