@@ -58,10 +58,33 @@ const CountrySchema = new Schema(
             cdr:{tpye:Number, default:0},
             totalYearly:{type:Number, default:0}
         },
-        treasury:{type:Number, default:0},
+        treasury:{
+            current:{type:Number, default:1000000},
+            taxRevenue:{
+                total:{type:Number, default:0},
+
+                salaryAvg:{
+                    workingClass:{type:Number, default:0},
+                    managerial:{type:Number, default:0},
+                    publicSector:{type:Number, default:0},
+                    teaching:{type:Number, default:0},
+                    military:{type:Number, default:0},
+                    medicine:{type:Number, default:0},
+                    highTech:{type:Number, default:0}
+                }
+            },
+        },
         debt:{type:Number, default:0},
+        taxes:{
+            incomeTax:{type:Number, default:0.1},
+            corpoTax:{type:Number, default:0.2},
+            salesTax:{type:Number, default:0.05},
+            propertyTax:{type:Number, default:0.01},
+            socialSecurityTax:{type:Number, default:0.07}
+        },
+        spending:{
 
-
+        }
     },
     {timestamps: true}
 )
