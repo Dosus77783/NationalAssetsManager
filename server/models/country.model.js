@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 
 const CountrySchema = new Schema(
     {
+        owner:{},
         name:{
             type: String,
             required: [true, "A Country must have a name."],
@@ -58,11 +59,77 @@ const CountrySchema = new Schema(
             cdr:{tpye:Number, default:0},
             totalYearly:{type:Number, default:0} //daily multiplied by 365
         },
+        industries:{ // describes how many large, and small corporations a country has, as well as their production and demand for an industry
+            totalSmallBusiness:{type:Number, default:0 },
+            // Depending on economic capabilities of a country (i.e. developing nation: 200, industrial: 50, or modern: 10)
+            // this will created based on the countries population (pop / economic capibility)
+            totalLargeCorp:{type:Number, default:0},
+            electricity:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            steel:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            plywood:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            concrete:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            miscBuildingMaterials:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            oilRefining:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            water:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            foodProcessing:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            markets:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            foodFarming:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            materialFarming:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            },
+            consumerGoods:{
+                count:{type:Number, default:0},
+                production:{type:Number, default:0},
+                demand:{type:Number, default:0}
+            }
+        },
         treasury:{
             current:{type:Number, default:1000000},
             debt:{type:Number, default:0},
             countryProfits:{ // overall profit of entire countries systems
-                incomeSalaryAvg:{
+                incomeSalaryAvg:{ // average income of every profession
                     workingClass:{type:Number, default:0},
                     managerial:{type:Number, default:0},
                     publicSector:{type:Number, default:0},
@@ -71,12 +138,12 @@ const CountrySchema = new Schema(
                     medicine:{type:Number, default:0},
                     highTech:{type:Number, default:0}
                 },
-                corpoProfits:{
+                corpoProfits:{ // overall profit of SBs and LCs before taxes
                     smallBusiness:{type:Number, default:0},
                     largeCorpos:{type:Number, default:0}
                 },
-                domesticGoodsConsumption:{type:Number, default:0}
-
+                consumerGoodsConsumption:{type:Number, default:0}, // domestic sale of all consumer goods in the country, used for sales tax calculating
+                tradeProfits:{type:Number, default:0} // the profits from (export - import) for all industries.
             },
             taxRevenue:{
                 total:{type:Number, default:0},
@@ -98,23 +165,24 @@ const CountrySchema = new Schema(
         },
         taxes:{
             incomeTax:{type:Number, default:0.1}, // this % will be multiplied onto income Salary averages of all professions.
-            corpoTax:{type:Number, default:0.2}, //
+            smallBusinessTax:{type:Number, default:0.15},
+            largeCorpoTax:{type:Number, default:0.2},
             salesTax:{type:Number, default:0.05},
             propertyTax:{type:Number, default:0.01},
             socialSecurityTax:{type:Number, default:0.07}
         },
-        spending:{ // This will by direct amount spent daily (as opposed to percentage)
+        spending:{ // This will by direct $ amount spent daily (as opposed to percentage)
             healthcare:{type:Number, default:0}, // increases birthRate, decreases deathRate
             education:{type:Number, default:0}, // increases % of managerial, publicSector, teaching, medicine, and highTech workers.
             infrastructure:{type:Number, default:0}, // Only thing this does right now is increase revenue of professions and corporations/busineses by a bit.
             familySubsidy:{type:Number, default:0}, // Increases birthRates, and slightly increases workingClass, teaching salaries
             socialAssistance:{type:Number, default:0}, // increases birthRates a little, decreases deathRates. Increases gradeSchool and university students. Also increases migrants.
-            lawEnforcement:{type:Number, default:0}, // 
+            // lawEnforcement:{type:Number, default:0}, // decreases crime rate, need to implement.
         }
     },
     {timestamps: true}
 )
 
-    const Country = model("Country", CountrySchema);
+const Country = model("Country", CountrySchema);
 
 export default Country
