@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 const CountrySchema = new Schema(
     {
-        owner:{},
+        owner:String,
         name:{
             type: String,
             required: [true, "A Country must have a name."],
@@ -13,6 +13,11 @@ const CountrySchema = new Schema(
             type:String,
             enum:["Democracy", "Republic", "Monarchy", "Theocracy", "Fascist", "Communist"],
             required: [true, "A government type must be chosen."]
+        },
+        difficulty:{
+            type:String,
+            enum:["Random", "Developing", "Industrial", "Modern"],
+            default:"Random"
         },
         land:{
             type:[[String]], 
@@ -56,7 +61,7 @@ const CountrySchema = new Schema(
         },
         deathRate:{
             daily:{type:Number, default:0},
-            cdr:{tpye:Number, default:0},
+            cdr:{type:Number, default:0},
             totalYearly:{type:Number, default:0} //daily multiplied by 365
         },
         industries:{ // describes how many large, and small corporations a country has, as well as their production and demand for an industry

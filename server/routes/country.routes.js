@@ -1,18 +1,16 @@
 import { Router } from "express"
-import { } from "../controllers/country.controller.js" 
+import { createCountry } from "../controllers/country.controller.js" 
 
 const countryRouter = Router();
 
 countryRouter.route("/")
-    .get( getAllPatients )
-    .post( createPatient )
+    // .get( getAllPatients )
+    .post( createCountry )
 
-countryRouter.route("/:id")
-    .get( getPatientById )
-    .put( editPatientById )
-    .delete( deletePatientById )
-countryRouter.route("/documents/count")
-    .get( getPatientCount )
+// countryRouter.route("/:id")
+//     .get( getPatientById )
+//     .put( editPatientById )
+//     .delete( deletePatientById )
 
 
 export default countryRouter
