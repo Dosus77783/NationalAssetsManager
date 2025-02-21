@@ -6,8 +6,9 @@ import Country from "../models/country.model.js";
 export const createCountry = async (req, res, next) =>{
     try{
         console.log(req.body)
-        const RES = await Country.create(req.body);
-        // countryGenerator(RES);
+        let RES = await Country.create(req.body);
+        console.log(RES);
+        RES = findByIdAndUpdate( RES._id, countryGenerator(RES), { runValidators: false });
         res.status(201).json(RES);
     }
     catch(error){

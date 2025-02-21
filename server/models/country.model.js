@@ -69,10 +69,10 @@ const CountrySchema = new Schema(
             // Depending on economic capabilities of a country (i.e. developing nation: 200, industrial: 50, or modern: 10)
             // this will created based on the countries population (pop / economic capibility)
             totalLargeCorp:{type:Number, default:0},
-            electricity:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            electricity:{ // Measured in MegaWatts, 1 power plant produces 16000 MW per day
+                count:{type:Number, default:0}, // each corporation has about 4-5(4.5) power plants. So 72,000MW per day per corporation
+                production:{type:Number, default:0}, // So 72,000MW per day per corporation
+                demand:{type:Number, default:0} // dev = 280 MW per 100,000 per day. ind = 1300 Mw , mod = 3700 MW
             },
             steel:{
                 count:{type:Number, default:0},
@@ -131,6 +131,7 @@ const CountrySchema = new Schema(
             }
         },
         treasury:{
+            economicCapability:{type:Number, default:200},
             current:{type:Number, default:1000000},
             debt:{type:Number, default:0},
             countryProfits:{ // overall profit of entire countries systems
@@ -183,7 +184,8 @@ const CountrySchema = new Schema(
             familySubsidy:{type:Number, default:0}, // Increases birthRates, and slightly increases workingClass, teaching salaries
             socialAssistance:{type:Number, default:0}, // increases birthRates a little, decreases deathRates. Increases gradeSchool and university students. Also increases migrants.
             // lawEnforcement:{type:Number, default:0}, // decreases crime rate, need to implement.
-        }
+        },
+        trade:{}
     },
     {timestamps: true}
 )
