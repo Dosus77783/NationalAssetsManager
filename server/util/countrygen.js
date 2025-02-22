@@ -12,22 +12,27 @@ const DEVELOPING = {
     popHigh:200,
     econCapabilityLow:100,
     econCapabilityHigh:200,
-    electricalDemand:280 //megaWatts per 100,000 per day
+    smallBusinessDivision:24,
+    electricalDemand:280, //megaWatts per 100,000 per day
+    electricalProductionModifier:0.75, // corporation amount usese numGen, this modifyier is added after numGen
 };
 const INDUSTRIAL = {   
     popLow:5,
     popHigh:50,
     econCapabilityLow:50,
     econCapabilityHigh:100,
-    electricalDemand:1300 //megaWatts per 100,000 per day
-
+    smallBusinessDivision:12,
+    electricalDemand:1300, //megaWatts per 100,000 per day
+    electricalProductionModifier:1.2,
 };
 const MODERN = {   
     popLow:1,
     popHigh:150,
     econCapabilityLow:10,
     econCapabilityHigh:50,
-    electricalDemand:3700 //megaWatts per 100,000 per day
+    smallBusinessDivision:12,
+    electricalDemand:3700, //megaWatts per 100,000 per day
+    electricalProductionModifier:1.5,
 };
 
 export function countryGenerator(nat){
@@ -49,8 +54,14 @@ export function countryGenerator(nat){
     }
 
     nat.population = genNumRange(dfSet.popLow, dfSet.popHigh) * 1000000;
-    
+
+    nat.treasury.economicCapability = genNumRange(dfSet.econCapabilityLow,dfSet.econCapabilityHigh);
+
+    nat.industries.totalSmallBusiness = nat.population/nat.treasury.economicCapability
+
     nat.industries.electricity.demand = (nat.population/100000) * dfSet.electricalDemand;
+    nat.industries.electricity.count = genNumRange(1,10) * dfSet.electricalProductionModifier;
+    nat.industries.elecriticty.production = (nat.industries.electricity.count * 72000) + ((nat.industries.totalSmallBusiness / dfSet.smallBusinessDivision) * 5);
 
 
 }
