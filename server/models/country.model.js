@@ -70,60 +70,69 @@ const CountrySchema = new Schema(
             // this will created based on the countries population (pop / economic capibility)
             totalLargeCorp:{type:Number, default:0},
             electricity:{ // Measured in MegaWatts, 1 power plant produces 16,000 MW per day
-                count:{type:Number, default:0}, // each corporation has about 4-5(4.5) power plants. So 72,000MW per day per corporation
+                count:{type:Number, default:0}, // each corporation has about 4-5(4.5) power plants.
                 production:{type:Number, default:0}, // So 72,000MW per day per corporation
-                // Small Businesse makes about 5MW per day. So 14,400 SBs = 1 electrical corp meaning 72,000MW
+                // Small Businesses makes about 3MW per day. So 24,000 SBs = 1 electrical corp meaning 72,000MW
                 demand:{type:Number, default:0} // dev = 280 MW, ind = 1300 Mw , mod = 3700 MW  -- per 100,000 per day.
             },
-            steel:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            steel:{ // Measured in tons, 1 steel plant produces 5,000 tons of steel per day.
+                count:{type:Number, default:0}, // each corp has 4 steel plants. Each make 5,000 tons per day.
+                production:{type:Number, default:0},// so 20,000 tons per day per corp
+                // Small businesses make about 2 tons per day. So 10,000 SBs = 1 corps worth of production.
+                demand:{type:Number, default:0} // dev = 200 tons, ind = 1000 tons, mod = 2500 tons -- per 100,000 people per day
             },
-            plywood:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            plywood:{ // Measured in Board Feet, BF. 1 plywood plant produces 350,000 BF per day
+                count:{type:Number, default:0}, // Each corp has 20 factories
+                production:{type:Number, default:0}, // Each corp produces 7,000,000 BF
+                // SBs make 850 BF per day, so it takes 8235.5 SBs to make 1 corps worth of production.
+                demand:{type:Number, default:0} // dev = 40,000 BF, ind = 100,000 BF, mod = 300,000 BF per day per 100,000 people
+                // 110M, example nation: dev = 44,000,000 BF, ind = 110,000,000 BF, mod = 330,000,000 BF total demand per day
             },
-            concrete:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            concrete:{ // Measured in cupic yards, CY. 1 plant produces 5,000 cupic yards per day.
+                count:{type:Number, default:0}, // 1 corp is 20 plants
+                production:{type:Number, default:0}, // 1 corp produces 100,000 CY of concrete
+                // SBs make 5 CY per day, so it takes 20,000 SBs to match a single corp.
+                demand:{type:Number, default:0} // dev = 500 CY, ind = 2,000 CY, mod = 5,000 CY per day per 100,000 people
+                // 110M example. dev = 	550,000 CY, ind = 2,200,000 CY, mod = 5,500,000 CY
             },
-            miscBuildingMaterials:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            miscBuildingMaterials:{// Measured in tons, 1 plant = 1,000 tons 
+                count:{type:Number, default:0}, // 10 plants = 1 corp = 10,000 tons per day
+                production:{type:Number, default:0}, // SBs make 0.5 tons, 36,000 SBs = 18,000 tons = 1.8 corps worth
+                demand:{type:Number, default:0} // dev = 50, ind = 200, mod = 500 tons per day per 100,000 people
+                // 110M example, dev = 55,000 tons, ind = 220,000 tons, mod =550,000 tons. 6 corps, 22 corps, 55 corps
             },
-            oilRefining:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            oilRefining:{// Measured in barrels of oil per day, bpd. 1 refinery = 250,000 bpd
+                count:{type:Number, default:0}, // 3 refineries = 1 corp = 750,000 bpd
+                production:{type:Number, default:0}, // SBs = 8bpd, 36,000 SBs = 288,000 bpd. About 1/3rd of 1 corp
+                demand:{type:Number, default:0} // dev = 1,500, ind = 3,000, mod = 6,100 barrels per day, per 100,000 people
+                //110M example, dev = 1,650,000 bpd, ind = 3,350,000 bpd, mod = 6,710,000 bpd. 3 corps, 5 corps, 9 corps
             },
-            water:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            water:{ // Measured in barrels of water, 1 barrel is 42 gallons, 1 plant = 2,000,000 barrels per day
+                count:{type:Number, default:0}, // 10 plants = 1 corp = 20,000,000 bpd
+                production:{type:Number, default:0}, // SBs = 500 bpd. 36,000 SBs = 18,000,000 bpd. About 0.9 of 1 corp.
+                demand:{type:Number, default:0} // dev = 250,000, ind = 500,000 , mod = 700,000 bpd
+                //110M example, dev = 275,000,000 bpd, ind = 550,000,000 bpd, mod = 770,000,000 bpd. 14 corps, 28 corps, 35 corps
             },
-            foodProcessing:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            foodProcessing:{ // Measured in pounds of food per day. 1 plant = 10,000,000 Ibs per day
+                count:{type:Number, default:0}, // 10 plants = 1 corp = 100,000,000 Ib per day
+                production:{type:Number, default:0}, // SBs = 2000 Ibs per day. 36,000 * 2000 = 72,000,000 Ibs
+                demand:{type:Number, default:0} // Demand is whatever the production is for markets
             },
-            markets:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            markets:{ // Measured in pounds of food, each store can handle 5,000  Ibs per day
+                count:{type:Number, default:0}, // 5,000 stores = 1 corp = 25,000,000 pounds per day
+                production:{type:Number, default:0}, // SBs = 4000 pounds. 36000 * 4000 = 144,000,000 pounds
+                demand:{type:Number, default:0} // dev = 400,000 ind = 450,000 , mod = 500,000 pounds of food per 100,000 people per day
+                //110M example, dev = 440,000,000 , ind = 495,000,000, mod = 550,000,000 pounds per day . 18 corps, 20 corps, 22 corps
             },
-            foodFarming:{
-                count:{type:Number, default:0},
-                production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+            foodFarming:{ // Measured in pounds of raw food per day. 1 Farm = 750,000 Ibs of food per day
+                count:{type:Number, default:0}, // 100 farms = 1 corp = 75,000,000 Ibs per day
+                production:{type:Number, default:0}, // SBs = 6,000 Ibs of food farmed per day. 36,000 * 6,000 = 216,000,000 Ibs produced
+                demand:{type:Number, default:0} // Demand will come from food processing production + 10% (Since Raw food is being processed, there is a bit of loss)
             },
-            materialFarming:{
-                count:{type:Number, default:0},
+            materialFarming:{ // Measured in Ibs of material per day. 1 farm makes 250,000 Ibs per day
+                count:{type:Number, default:0}, // 100 farms = 1 corp = 25,000,000 Ibs per day
                 production:{type:Number, default:0},
-                demand:{type:Number, default:0}
+                demand:{type:Number, default:0} // 
             },
             consumerGoods:{
                 count:{type:Number, default:0},
