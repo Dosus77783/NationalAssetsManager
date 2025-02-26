@@ -3,15 +3,18 @@ function genNumRange(min = 0, max = 50){
     return Math.floor((Math.random() * (max+1 - min)) + min)
 } 
 
-console.log(genNumRange(1,150)*1000000)
-
-
 const difficultyChoices = ["Developing", "Industrial", "Modern"];
 const DEVELOPING = {   
     popLow:10,
     popHigh:200,
+    maleFemaleModifier:5, // Gets added to genNumRange equation
+    ageModifier: {child:40, young: 20, middleAged:20}, // Starting % for the calculation
+    gradeSchoolModifier: 70, // percentage of children in school
+    universityModifier: 7, // percentage of young adults in university
     econCapabilityLow:100,
     econCapabilityHigh:250,
+    unEmplModifier:4, //Starting percentage of unemployment in a country
+    disabledModifier:3, // Starting percentage of disabled in a country
     electricalDemand:280, //megaWatts per 100,000 per day
     electricalProductionModifier:0.75, // corporation amount uses genNumRange, this modifyier is multiplied to the base after genNumRange
     steelDemand:200, // tons of steel per 100,000 per day
@@ -30,12 +33,22 @@ const DEVELOPING = {
     foodProductionModifier: 1.15,
     processProductionModifier: 0.8, // No need for demand, because demand comes from markets production
     farmingProductionModifier: 0.9 ,// No need for demand, because demand comes from food processing production
+    materialDemand: 100000, // Pounds of material per day, per 100,000 people
+    materialProductionModifier: 0.75,
+    consumerGoodsDemand: 50, // Tons of goods per day, per 100,000 people
+    consumerGoodsProductionModifier: .85,
 };
 const INDUSTRIAL = {   
     popLow:5,
     popHigh:150,
+    maleFemaleModifier:3, // Gets added to genNumRange equation
+    ageModifier: {child:25, young: 20, middleAged:30}, // Starting % for the calculation
+    gradeSchoolModifier: 90, // percentage of children in school
+    universityModifier: 20, // percentage of young adults in university
     econCapabilityLow:50,
     econCapabilityHigh:100,
+    unEmplModifier:2, //Starting percentage of unemployment in a country
+    disabledModifier:2, // Starting percentage of disabled in a country
     electricalDemand:1300, //megaWatts per 100,000 per day
     electricalProductionModifier:1.2,
     steelDemand:1000, // tons of steel per 100,000 per day
@@ -54,13 +67,22 @@ const INDUSTRIAL = {
     foodProductionModifier: 1.5,
     processProductionModifier: 1.2, // No need for demand, because demand comes from markets production
     farmingProductionModifier: 1.2 ,// No need for demand, because demand comes from food processing production
-
+    materialDemand: 200000, // Pounds of material per day, per 100,000 people
+    materialProductionModifier: 1.5,
+    consumerGoodsDemand: 200, // Tons of goods per day, per 100,000 people
+    consumerGoodsProductionModifier: 2,
 };
 const MODERN = {   
     popLow:1,
     popHigh:100,
+    maleFemaleModifier:2, // Gets added to genNumRange equation
+    ageModifier: {child:15, young: 15, middleAged:40}, // Starting % for the calculation    
+    gradeSchoolModifier: 99, // percentage of children in school
+    universityModifier: 40, // percentage of young adults in university
     econCapabilityLow:10,
     econCapabilityHigh:50,
+    unEmplModifier:1, //Starting percentage of unemployment in a country
+    disabledModifier:1, // Starting percentage of disabled in a country
     electricalDemand:3700, //megaWatts per 100,000 per day
     electricalProductionModifier:1.5,
     steelDemand:2500, // tons of steel per 100,000 per day
@@ -79,6 +101,10 @@ const MODERN = {
     foodProductionModifier: 1.75,
     processProductionModifier: 1.5, // No need for demand, because demand comes from markets production
     farmingProductionModifier: 1.35,// No need for demand, because demand comes from food processing production
+    materialDemand: 300000, // Pounds of material per day, per 100,000 people
+    materialProductionModifier: 3,
+    consumerGoodsDemand: 500, // Tons of goods per day, per 100,000 people
+    consumerGoodsProductionModifier: 4.5,
 };
 
 const SBDivision = 12; // The division number in which small businesses are divided among the industries. With 12, all SBs are divided evenly among all industries.
@@ -107,11 +133,17 @@ const MarketCorpProd = 25000000; // 5000 stores where each store can sell 5,000 
 const MarketCorpCount = {low:7, high:12}; // Standard high and low possibility for market corporation count.
 const SBMarketProd = 4000; // pounds per day, 1 SB that sells food
 const FoodProcessCorpProd = 100000000; // 10 plants where each plant can produce 10,000,000 pounds of food per day
-const FoodProcessCorpCount = {low:2, high:5}; // Standard high and low possibility for market corporation count.
+const FoodProcessCorpCount = {low:2, high:5}; // Standard high and low possibility for food processing corporation count.
 const SBFoodProcessProd = 2000; // pounds per day, 1 SB of food production
 const FarmingCorpProd = 75000000; // 100 farms where each farm can produce 750,000 pounds of food per day
-const FarmingCorpCount = {low:1, high:5}; // Standard high and low possibility for market corporation count.
+const FarmingCorpCount = {low:1, high:5}; // Standard high and low possibility for farming corporation count.
 const SBFarmingProd = 6000; // pounds per day, 1 SB of farming production
+const MaterialCorpProd = 25000000; // 100 farms where each farm can produce 250,000 pounds of materials per day
+const MaterialCorpCount = {low:2, high:8}; // Standard high and low possibility for material corporation count.
+const SBMaterialProd = 2100; // pounds per day, 1 SB of material production
+const ConsumerGoodsCorpProd = 25000000; // 50 factories where each factory can produce 25,000 tons of goods per day
+const ConsumerGoodsCorpCount = {low:1, high:4}; // Standard high and low possibility for goods corporation count.
+const SBConsumerGoodsProd = 2100; // tons per day, 1 SB of goods production
 
 
 export function countryGenerator(nat){
@@ -136,47 +168,94 @@ export function countryGenerator(nat){
 
     nat.treasury.economicCapability = genNumRange(dfSet.econCapabilityLow,dfSet.econCapabilityHigh);
 
-    nat.industries.totalSmallBusiness = nat.population/nat.treasury.economicCapability
+    nat.industries.totalSmallBusiness = nat.population/nat.treasury.economicCapability;
 
-    nat.industries.electricity.demand = (nat.population/100000) * dfSet.electricalDemand; // electrical total demand in MW 
-    nat.industries.electricity.count = genNumRange(ElecCorpCount.low, ElecCorpCount.high) * dfSet.electricalProductionModifier;
-    nat.industries.elecriticty.production = (nat.industries.electricity.count * ElecCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBElecProd);
+    nat.industries.types.electricity.demand = (nat.population/100000) * dfSet.electricalDemand; // electrical total demand in MW 
+    nat.industries.types.electricity.count = Math.ceil(genNumRange(ElecCorpCount.low, ElecCorpCount.high) * dfSet.electricalProductionModifier);
+    nat.industries.types.elecriticty.production = (nat.industries.types.electricity.count * ElecCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBElecProd);
 
-    nat.industries.steel.demand = (nat.population/100000) * dfSet.steelDemand; // steel total demand in tons
-    nat.industries.steel.count = genNumRange(SteelCorpCount.low, SteelCorpCount.high) * dfSet.steelProductionModifier;
-    nat.industries.steel.production = (nat.industries.steel.count * SteelCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBSteelProd);
+    nat.industries.types.steel.demand = (nat.population/100000) * dfSet.steelDemand; // steel total demand in tons
+    nat.industries.types.steel.count = Math.ceil(genNumRange(SteelCorpCount.low, SteelCorpCount.high) * dfSet.steelProductionModifier);
+    nat.industries.types.steel.production = (nat.industries.types.steel.count * SteelCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBSteelProd);
 
-    nat.industries.plywood.demand = (nat.population/100000) * dfSet.plywoodDemand; // plywood total demand in BF
-    nat.industries.plywood.count = genNumRange(PlywoodCorpCount.low, PlywoodCorpCount.high) * dfSet.plywoodProductionModifier;
-    nat.industries.plywood.production = (nat.industries.plywood.count * PlywoodCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBPlywoodProd);
+    nat.industries.types.plywood.demand = (nat.population/100000) * dfSet.plywoodDemand; // plywood total demand in BF
+    nat.industries.types.plywood.count = Math.ceil(genNumRange(PlywoodCorpCount.low, PlywoodCorpCount.high) * dfSet.plywoodProductionModifier);
+    nat.industries.types.plywood.production = (nat.industries.types.plywood.count * PlywoodCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBPlywoodProd);
 
-    nat.industries.concrete.demand = (nat.population/100000) * dfSet.concreteDemand; // concrete total demand in CY
-    nat.industries.concrete.count = genNumRange(ConcreteCorpCount.low, ConcreteCorpCount.high) * dfSet.concreteProductionModifier;
-    nat.industries.concrete.production = (nat.industries.concrete.count * ConcreteCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBConcreteProd);
+    nat.industries.types.concrete.demand = (nat.population/100000) * dfSet.concreteDemand; // concrete total demand in CY
+    nat.industries.types.concrete.count = Math.ceil(genNumRange(ConcreteCorpCount.low, ConcreteCorpCount.high) * dfSet.concreteProductionModifier);
+    nat.industries.types.concrete.production = (nat.industries.types.concrete.count * ConcreteCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBConcreteProd);
 
-    nat.industries.miscBuildingMaterials.demand = (nat.population/100000) * dfSet.miscBuildDemand; // misc building total demand in CY
-    nat.industries.miscBuildingMaterials.count = genNumRange(MiscBuildingCorpCount.low, MiscBuildingCorpCount.high) * dfSet.miscBuildProductionModifier;
-    nat.industries.miscBuildingMaterials.production = (nat.industries.miscBuildingMaterials.count * MiscBuildingCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBMiscBuildProd);
+    nat.industries.types.miscBuildingMaterials.demand = (nat.population/100000) * dfSet.miscBuildDemand; // misc building total demand in CY
+    nat.industries.types.miscBuildingMaterials.count = Math.ceil(genNumRange(MiscBuildingCorpCount.low, MiscBuildingCorpCount.high) * dfSet.miscBuildProductionModifier);
+    nat.industries.types.miscBuildingMaterials.production = (nat.industries.types.miscBuildingMaterials.count * MiscBuildingCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBMiscBuildProd);
 
-    nat.industries.oilRefining.demand = (nat.population/100000) * dfSet.oilDemand; // oil total demand in bpd
-    nat.industries.oilRefining.count = genNumRange(OilCorpCount.low, OilCorpCount.high) * dfSet.oilProductionModifier;
-    nat.industries.oilRefining.production = (nat.industries.oilRefining.count * OilCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBOilProd);
+    nat.industries.types.oilRefining.demand = (nat.population/100000) * dfSet.oilDemand; // oil total demand in bpd
+    nat.industries.types.oilRefining.count = Math.ceil(genNumRange(OilCorpCount.low, OilCorpCount.high) * dfSet.oilProductionModifier);
+    nat.industries.types.oilRefining.production = (nat.industries.types.oilRefining.count * OilCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBOilProd);
 
-    nat.industries.water.demand = (nat.population/100000) * dfSet.waterDemand; // water total demand in bpd
-    nat.industries.water.count = genNumRange(WaterCorpCount.low, WaterCorpCount.high) * dfSet.waterProductionModifier;
-    nat.industries.water.production = (nat.industries.water.count * WaterCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBWaterProd);
+    nat.industries.types.water.demand = (nat.population/100000) * dfSet.waterDemand; // water total demand in bpd
+    nat.industries.types.water.count = Math.ceil(genNumRange(WaterCorpCount.low, WaterCorpCount.high) * dfSet.waterProductionModifier);
+    nat.industries.types.water.production = (nat.industries.types.water.count * WaterCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBWaterProd);
 
-    nat.industries.markets.demand = (nat.population/100000) * dfSet.foodDemand; // food total demand in pounds per day
-    nat.industries.markets.count = genNumRange(MarketCorpCount.low, MarketCorpCount.high) * dfSet.foodProductionModifier;
-    nat.industries.markets.production = (nat.industries.markets.count * MarketCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBMarketProd);
+    nat.industries.types.markets.demand = (nat.population/100000) * dfSet.foodDemand; // food total demand in pounds per day
+    nat.industries.types.markets.count = Math.ceil(genNumRange(MarketCorpCount.low, MarketCorpCount.high) * dfSet.foodProductionModifier);
+    nat.industries.types.markets.production = (nat.industries.types.markets.count * MarketCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBMarketProd);
 
-    nat.industries.foodProcessing.demand = nat.industries.markets.production; // Demand comes from a markets "production"
-    nat.industries.foodProcessing.count = genNumRange(FoodProcessCorpCount.low, FoodProcessCorpCount.high) * dfSet.foodProductionModifier;
-    nat.industries.foodProcessing.production = (nat.industries.foodProcessing.count * FoodProcessCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBFoodProcessProd);
+    nat.industries.types.foodProcessing.demand = nat.industries.types.markets.production; // Demand comes from a markets "production"
+    nat.industries.types.foodProcessing.count = Math.ceil(genNumRange(FoodProcessCorpCount.low, FoodProcessCorpCount.high) * dfSet.foodProductionModifier);
+    nat.industries.types.foodProcessing.production = (nat.industries.types.foodProcessing.count * FoodProcessCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBFoodProcessProd);
 
-    nat.industries.foodFarming.demand = nat.industries.foodProcessing.production; // Demand comes from a food processing "production"
-    nat.industries.foodFarming.count = genNumRange(FarmingCorpCount.low, FarmingCorpCount.high) * dfSet.foodProductionModifier;
-    nat.industries.foodFarming.production = (nat.industries.foodFarming.count * FarmingCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBFarmingProd);
+    nat.industries.types.foodFarming.demand = nat.industries.types.foodProcessing.production; // Demand comes from a food processing "production"
+    nat.industries.types.foodFarming.count = Math.ceil(genNumRange(FarmingCorpCount.low, FarmingCorpCount.high) * dfSet.foodProductionModifier);
+    nat.industries.types.foodFarming.production = (nat.industries.types.foodFarming.count * FarmingCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBFarmingProd);
 
+    nat.industries.types.materialFarming.demand = (nat.population/100000) * dfSet.materialDemand; // Demand total in pounds of material per day
+    nat.industries.types.materialFarming.count = Math.ceil(genNumRange(MaterialCorpCount.low, MaterialCorpCount.high) * dfSet.materialProductionModifier);
+    nat.industries.types.materialFarming.production = (nat.industries.types.materialFarming.count * MaterialCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBMaterialProd);
 
+    nat.industries.types.consumerGoods.demand = (nat.population/100000) * dfSet.consumerGoodsDemand; // Demand total in pounds of material per day
+    nat.industries.types.consumerGoods.count = Math.ceil(genNumRange(ConsumerGoodsCorpCount.low, ConsumerGoodsCorpCount.high) * dfSet.consumerGoodsProductionModifier);
+    nat.industries.types.consumerGoods.production = (nat.industries.types.consumerGoods.count * ConsumerGoodsCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBConsumerGoodsProd);
+
+    nat.industries.totalLargeCorp = (() => {
+        let total = 0;
+        for(let ind in nat.industries.types){
+            total += nat.industries.types[ind].count;
+        }
+        return total;
+    })();
+    // Could use a Object.values().reduce() method instead.
+
+    nat.demographics.male = nat.population * (genNumRange(49, 49 + dfSet.maleFemaleModifier) * 0.01);
+    nat.demographics.female = nat.population - nat.demographics.male;
+
+    nat.demographics.ageRange.children = 
+        Math.round(nat.population * (0.01 * (dfSet.ageModifier.child + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 10, nat.treasury.economicCapability))));
+    nat.demographics.ageRange.young =
+        Math.round(nat.population * (0.01 * (dfSet.ageModifier.young + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 10, nat.treasury.economicCapability))));
+    nat.demographics.ageRange.middleAged = 
+        Math.round(nat.population * (0.01 * (dfSet.ageModifier.middleAged + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 10, nat.treasury.economicCapability))));
+    nat.demographics.ageRange.old =
+        nat.population - nat.demographics.ageRange.children - nat.demographics.ageRange.young -nat.demographics.ageRange.middleAged;
+    
+    nat.demographics.gradeSchoolStudents = 
+        nat.demographics.ageRange.children * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 20, nat.treasury.economicCapability)));
+    
+    nat.demographics.universityStudents = 
+        nat.demographics.ageRange.young * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 6, nat.treasury.economicCapability)));
+
+    nat.demographics.workingAge = nat.demographics.ageRange.young + nat.demographics.ageRange.middleAged;
+    nat.demographics.unemployedPop = 
+        nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 12, nat.treasury.economicCapability)));
+    nat.demographics.disabledPop = 
+        nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 5, nat.treasury.economicCapability)));
+    nat.demographics.workingReal = nat.demographics.workingAge - nat.demographics.unemployedPop - nat.demographics.disabledPop;
+
+    // nat.demographics.profession.workingClass = 
+}
+// console.log(Math.round(110000000 * (0.01 * (25 + (1+(((48-10)*(10-1)) / (50-10)))   ))));
+
+function linearMappingScale(oRangeA, oRangeB, nRangeA, nRangeB, Input){
+    return Math.round( (( (Input - oRangeA)*(nRangeB - nRangeA) ) / (oRangeB - oRangeA)) );
 }
