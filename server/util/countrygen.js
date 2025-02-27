@@ -3,6 +3,10 @@ function genNumRange(min = 0, max = 50){
     return Math.floor((Math.random() * (max+1 - min)) + min)
 } 
 
+function linearMappingScale(oRangeA, oRangeB, nRangeA, nRangeB, Input){
+    return Math.round( (( (Input - oRangeA)*(nRangeB - nRangeA) ) / (oRangeB - oRangeA)) );
+}
+
 const difficultyChoices = ["Developing", "Industrial", "Modern"];
 const DEVELOPING = {   
     popLow:10,
@@ -15,6 +19,9 @@ const DEVELOPING = {
     econCapabilityHigh:250,
     unEmplModifier:4, //Starting percentage of unemployment in a country
     disabledModifier:3, // Starting percentage of disabled in a country
+    professionModifiers:{wc:63, mng:8, ps:7, t:4, med:3, ht:1}, // profession percentage modifiers
+    birthCBR:{low:25, high:40}, // birth and death rates per 1000/year
+    deathCDR:{low:8, high:15 },
     electricalDemand:280, //megaWatts per 100,000 per day
     electricalProductionModifier:0.75, // corporation amount uses genNumRange, this modifyier is multiplied to the base after genNumRange
     steelDemand:200, // tons of steel per 100,000 per day
@@ -49,6 +56,9 @@ const INDUSTRIAL = {
     econCapabilityHigh:100,
     unEmplModifier:2, //Starting percentage of unemployment in a country
     disabledModifier:2, // Starting percentage of disabled in a country
+    professionModifiers:{wc:38, mng:12, ps:15, t:6, med:7, ht:10}, // profession percentage modifiers
+    birthCBR:{low:15, high:25}, // birth and death rates per 1000/year
+    deathCDR:{low:6, high:10 },
     electricalDemand:1300, //megaWatts per 100,000 per day
     electricalProductionModifier:1.2,
     steelDemand:1000, // tons of steel per 100,000 per day
@@ -83,6 +93,9 @@ const MODERN = {
     econCapabilityHigh:50,
     unEmplModifier:1, //Starting percentage of unemployment in a country
     disabledModifier:1, // Starting percentage of disabled in a country
+    professionModifiers:{wc:25, mng:15, ps:12, t:12, med:10, ht:15}, // profession percentage modifiers
+    birthCBR:{low:8, high:15}, // birth and death rates per 1000/year
+    deathCDR:{low:8, high:12},
     electricalDemand:3700, //megaWatts per 100,000 per day
     electricalProductionModifier:1.5,
     steelDemand:2500, // tons of steel per 100,000 per day
@@ -107,6 +120,15 @@ const MODERN = {
     consumerGoodsProductionModifier: 4.5,
 };
 
+const salAvg = {
+    workingClass: {low:10, high:70},
+    managerial: {low:50, high:100},
+    publicSector: {low:40, high:120},
+    teaching: {low:40, high:100},
+    medicine: {low:60, high:150},
+    highTech: {low:70, high:200},
+    military: {low:35, high:80},
+}
 const SBDivision = 12; // The division number in which small businesses are divided among the industries. With 12, all SBs are divided evenly among all industries.
 const ElecCorpProd = 72000; // MW per day a single corps production.
 const ElecCorpCount = {low:1, high:10}; // Standard high and low possibility for electrical corporation count.
@@ -252,10 +274,39 @@ export function countryGenerator(nat){
         nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 5, nat.treasury.economicCapability)));
     nat.demographics.workingReal = nat.demographics.workingAge - nat.demographics.unemployedPop - nat.demographics.disabledPop;
 
-    // nat.demographics.profession.workingClass = 
-}
-// console.log(Math.round(110000000 * (0.01 * (25 + (1+(((48-10)*(10-1)) / (50-10)))   ))));
+    nat.demographics.profession.workingClass = nat.demographics.workingReal * ( 0.01* (dfSet.professionModifiers.wc + genNumRange(0,8)) );
+    nat.demographics.profession.managerial = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.mng);
+    nat.demographics.profession.publicSector = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ps);
+    nat.demographics.profession.teaching = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.t);
+    nat.demographics.profession.medicine = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.med);
+    nat.demographics.profession.highTech = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ht);
+    nat.demographics.profession.military = 
+        nat.demographics.workingReal - nat.demographics.profession.workingClass - nat.demographics.profession.managerial - nat.demographics.profession.publicSector - nat.demographics.profession.teaching - nat.demographics.profession.medicine - nat.demographics.profession.highTech;
 
-function linearMappingScale(oRangeA, oRangeB, nRangeA, nRangeB, Input){
-    return Math.round( (( (Input - oRangeA)*(nRangeB - nRangeA) ) / (oRangeB - oRangeA)) );
+    nat.birthRate.daily = 
+        Math.round((linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, dfSet.birthCBR.low, dfSet.birthCBR.high, nat.treasury.economicCapability) * nat.population) / 365000);
+    nat.birthRate.totalYearly = nat.birthRate.daily * 365;
+    nat.birthRate.cbr = (nat.birthRate.daily * 365000) / nat.population;
+
+    nat.deathRate.daily = 
+        Math.round((linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, dfSet.deathCDR.low, dfSet.deathCDR.high, nat.treasury.economicCapability) * nat.population) / 365000);
+    nat.deathRate.totalYearly = nat.birthRate.daily * 365;
+    nat.deathRate.cdr = (nat.birthRate.daily * 365000) / nat.population;
+
+    for(let prof in nat.treasury.countryProfits.incomeSalaryAvg){
+        let centerNum = (salAvg[prof].low + ( (salAvg[prof].high - salAvg[prof].low)/2 ));
+        let randRange = centerNum * .3;
+        let randNum = genNumRange(0,randRange)
+        nat.treasury.countryProfits.incomeSalaryAvg[prof] = centerNum + (genNumRange(0,1) ? randNum : -randNum);
+    }
+
+    for(let i in nat.industries.types){
+        let ind = nat.industries.types[i];
+        let smInd = nat.industries.totalSmallBusiness/12;
+        nat.treasury.countryProfits.corpoProfits.largeCorpos += ( ind.price * (ind.production > ind.demand ? ind.demand : ind.production));
+        nat.treasury.countryProfits.corpoProfits.smallBusiness += smInd * ind.price // Need to fix this and refactor code, this is not an accurate assesment of small business profits
+        if(i = "consumerGoods"){
+            ind.treasury.countryProfits.consumerGoodsConsumption = ( ind.price * (ind.production > ind.demand ? ind.demand : ind.production));
+        }
+    }
 }
