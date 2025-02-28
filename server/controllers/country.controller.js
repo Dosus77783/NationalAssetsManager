@@ -1,5 +1,5 @@
 import Country from "../models/country.model.js";
-// import countryGenerator from "../util/countrygen.js"
+import countryGenerator from "../util/countrygen.js"
 
 // POST
 
@@ -7,9 +7,9 @@ export const createCountry = async (req, res, next) =>{
     try{
         console.log(req.body)
         let RES = await Country.create(req.body);
-        console.log(RES);
-        RES = findByIdAndUpdate( RES._id, countryGenerator(RES), { runValidators: false });
+        RES = await Country.findByIdAndUpdate( RES._id, countryGenerator(RES), { runValidators: false });
         res.status(201).json(RES);
+        console.log(RES);
     }
     catch(error){
         console.log(error)

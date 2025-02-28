@@ -165,9 +165,9 @@ const CountrySchema = new Schema(
                     managerial:{type:Number, default:0},
                     publicSector:{type:Number, default:0},
                     teaching:{type:Number, default:0},
-                    military:{type:Number, default:0},
                     medicine:{type:Number, default:0},
-                    highTech:{type:Number, default:0}
+                    highTech:{type:Number, default:0},
+                    military:{type:Number, default:0}
                 },
                 corpoProfits:{ // overall profit of SBs and LCs before taxes
                     smallBusiness:{type:Number, default:0},
@@ -183,15 +183,16 @@ const CountrySchema = new Schema(
                     managerial:{type:Number, default:0},
                     publicSector:{type:Number, default:0},
                     teaching:{type:Number, default:0},
-                    military:{type:Number, default:0},
                     medicine:{type:Number, default:0},
-                    highTech:{type:Number, default:0}
+                    highTech:{type:Number, default:0},
+                    military:{type:Number, default:0},
                 },
                 corpoTax:{ // corpo profits * tax rate
                     smallBusiness:{type:Number, default:0},
                     largeCorpos:{type:Number, default:0}
                 },
-                salesTax:{type:Number, default:0} // domestic goods consuption * tax rate
+                salesTax:{type:Number, default:0}, // domestic goods consuption * tax rate
+                socialSecurityTax:{type:Number, default:0}, // profession * socialSecurityTax
             }
         },
         taxes:{
@@ -199,8 +200,8 @@ const CountrySchema = new Schema(
             smallBusinessTax:{type:Number, default:0.15},
             largeCorpoTax:{type:Number, default:0.2},
             salesTax:{type:Number, default:0.05},
-            propertyTax:{type:Number, default:0.01},
-            socialSecurityTax:{type:Number, default:0.07}
+            socialSecurityTax:{type:Number, default:0.07},
+            // propertyTax:{type:Number, default:0.01}, // Need land generation to properly implement this
         },
         spending:{ // This will by direct $ amount spent daily (as opposed to percentage)
             healthcare:{type:Number, default:0}, // increases birthRate, decreases deathRate

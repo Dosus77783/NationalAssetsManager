@@ -22,6 +22,7 @@ const DEVELOPING = {
     professionModifiers:{wc:63, mng:8, ps:7, t:4, med:3, ht:1}, // profession percentage modifiers
     birthCBR:{low:25, high:40}, // birth and death rates per 1000/year
     deathCDR:{low:8, high:15 },
+    spendingStandards:{healthcare:0.10, education:0.12, infrastructure: 0.40, familySubsidy: 0.05, socialAssistance:0.05}, // Starter spending defaults.
     electricalDemand:280, //megaWatts per 100,000 per day
     electricalProductionModifier:0.75, // corporation amount uses genNumRange, this modifyier is multiplied to the base after genNumRange
     steelDemand:200, // tons of steel per 100,000 per day
@@ -59,6 +60,7 @@ const INDUSTRIAL = {
     professionModifiers:{wc:38, mng:12, ps:15, t:6, med:7, ht:10}, // profession percentage modifiers
     birthCBR:{low:15, high:25}, // birth and death rates per 1000/year
     deathCDR:{low:6, high:10 },
+    spendingStandards:{healthcare:0.18, education:0.15, infrastructure: 0.30, familySubsidy: 0.10, socialAssistance:0.10}, // Starter spending defaults.
     electricalDemand:1300, //megaWatts per 100,000 per day
     electricalProductionModifier:1.2,
     steelDemand:1000, // tons of steel per 100,000 per day
@@ -96,6 +98,7 @@ const MODERN = {
     professionModifiers:{wc:25, mng:15, ps:12, t:12, med:10, ht:15}, // profession percentage modifiers
     birthCBR:{low:8, high:15}, // birth and death rates per 1000/year
     deathCDR:{low:8, high:12},
+    spendingStandards:{healthcare:0.25, education:0.18, infrastructure: 0.20, familySubsidy: 0.15, socialAssistance:0.15}, // Starter spending defaults.
     electricalDemand:3700, //megaWatts per 100,000 per day
     electricalProductionModifier:1.5,
     steelDemand:2500, // tons of steel per 100,000 per day
@@ -119,15 +122,14 @@ const MODERN = {
     consumerGoodsDemand: 500, // Tons of goods per day, per 100,000 people
     consumerGoodsProductionModifier: 4.5,
 };
-
 const salAvg = {
-    workingClass: {low:10, high:70},
-    managerial: {low:50, high:100},
-    publicSector: {low:40, high:120},
-    teaching: {low:40, high:100},
-    medicine: {low:60, high:150},
-    highTech: {low:70, high:200},
-    military: {low:35, high:80},
+    workingClass:{low:10, high:70},
+    managerial:{low:50, high:100},
+    publicSector:{low:40, high:120},
+    teaching:{low:40, high:100},
+    medicine:{low:60, high:150},
+    highTech:{low:70, high:200},
+    military:{low:35, high:80},
 }
 const SBDivision = 12; // The division number in which small businesses are divided among the industries. With 12, all SBs are divided evenly among all industries.
 const ElecCorpProd = 72000; // MW per day a single corps production.
@@ -168,7 +170,7 @@ const ConsumerGoodsCorpCount = {low:1, high:4}; // Standard high and low possibi
 const SBConsumerGoodsProd = 2100; // tons per day, 1 SB of goods production
 
 
-export function countryGenerator(nat){
+export default function countryGenerator(nat){
     let dfSet = {}; // Difficulty Setting
 
     if(nat.difficulty == "Random"){ nat.difficulty = difficultyChoices[genNumRange(0,2)]}
@@ -194,7 +196,7 @@ export function countryGenerator(nat){
 
     nat.industries.types.electricity.demand = (nat.population/100000) * dfSet.electricalDemand; // electrical total demand in MW 
     nat.industries.types.electricity.count = Math.ceil(genNumRange(ElecCorpCount.low, ElecCorpCount.high) * dfSet.electricalProductionModifier);
-    nat.industries.types.elecriticty.production = (nat.industries.types.electricity.count * ElecCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBElecProd);
+    nat.industries.types.electricity.production = (nat.industries.types.electricity.count * ElecCorpProd) + ((nat.industries.totalSmallBusiness / SBDivision) * SBElecProd);
 
     nat.industries.types.steel.demand = (nat.population/100000) * dfSet.steelDemand; // steel total demand in tons
     nat.industries.types.steel.count = Math.ceil(genNumRange(SteelCorpCount.low, SteelCorpCount.high) * dfSet.steelProductionModifier);
@@ -242,7 +244,7 @@ export function countryGenerator(nat){
 
     nat.industries.totalLargeCorp = (() => {
         let total = 0;
-        for(let ind in nat.industries.types){
+        for(let ind of Object.keys(nat.industries.types)){
             total += nat.industries.types[ind].count;
         }
         return total;
@@ -267,7 +269,7 @@ export function countryGenerator(nat){
     nat.demographics.universityStudents = 
         nat.demographics.ageRange.young * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 6, nat.treasury.economicCapability)));
 
-    nat.demographics.workingAge = nat.demographics.ageRange.young + nat.demographics.ageRange.middleAged;
+    nat.demographics.workingAge = nat.demographics .ageRange.young + nat.demographics.ageRange.middleAged;
     nat.demographics.unemployedPop = 
         nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 12, nat.treasury.economicCapability)));
     nat.demographics.disabledPop = 
@@ -290,23 +292,48 @@ export function countryGenerator(nat){
 
     nat.deathRate.daily = 
         Math.round((linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, dfSet.deathCDR.low, dfSet.deathCDR.high, nat.treasury.economicCapability) * nat.population) / 365000);
-    nat.deathRate.totalYearly = nat.birthRate.daily * 365;
-    nat.deathRate.cdr = (nat.birthRate.daily * 365000) / nat.population;
+    nat.deathRate.totalYearly = nat.deathRate.daily * 365;
+    nat.deathRate.cdr = (nat.deathRate.daily * 365000) / nat.population;
 
-    for(let prof in nat.treasury.countryProfits.incomeSalaryAvg){
+    for(let prof of Object.keys(nat.treasury.countryProfits.incomeSalaryAvg)){
         let centerNum = (salAvg[prof].low + ( (salAvg[prof].high - salAvg[prof].low)/2 ));
         let randRange = centerNum * .3;
         let randNum = genNumRange(0,randRange)
         nat.treasury.countryProfits.incomeSalaryAvg[prof] = centerNum + (genNumRange(0,1) ? randNum : -randNum);
     }
 
-    for(let i in nat.industries.types){
+    for(let i of Object.keys(nat.industries.types)){
         let ind = nat.industries.types[i];
         let smInd = nat.industries.totalSmallBusiness/12;
         nat.treasury.countryProfits.corpoProfits.largeCorpos += ( ind.price * (ind.production > ind.demand ? ind.demand : ind.production));
         nat.treasury.countryProfits.corpoProfits.smallBusiness += smInd * ind.price // Need to fix this and refactor code, this is not an accurate assesment of small business profits
         if(i = "consumerGoods"){
-            ind.treasury.countryProfits.consumerGoodsConsumption = ( ind.price * (ind.production > ind.demand ? ind.demand : ind.production));
+            nat.treasury.countryProfits.consumerGoodsConsumption = ( ind.price * (ind.production > ind.demand ? ind.demand : ind.production));
         }
     }
+
+    nat.treasury.current = genNumRange(1000000,55000000); // Some what arbitrary number but its the starting treasury the nation recieves at the beginning
+
+    for(let prof of Object.keys(nat.treasury.taxRevenue.incomeTax)){
+        let temp = ((nat.treasury.countryProfits.incomeSalaryAvg[prof] * 1000)  * nat.demographics.profession[prof]) 
+
+        nat.treasury.taxRevenue.incomeTax[prof] = temp * nat.taxes.incomeTax;
+        nat.treasury.taxRevenue.socialSecurityTax += temp * nat.taxes.socialSecurityTax
+
+        nat.treasury.taxRevenue.total += nat.treasury.taxRevenue.incomeTax[prof]
+    }
+
+    nat.treasury.taxRevenue.corpoTax.largeCorpos = nat.treasury.countryProfits.corpoProfits.largeCorpos * nat.taxes.largeCorpoTax;
+    nat.treasury.taxRevenue.corpoTax.smallBusiness = nat.treasury.countryProfits.corpoProfits.smallBusiness * nat.taxes.smallBusinessTax;
+
+    nat.treasury.taxRevenue.salesTax = nat.treasury.countryProfits.consumerGoodsConsumption * nat.taxes.salesTax;
+
+    nat.treasury.taxRevenue.total += 
+        nat.treasury.taxRevenue.corpoTax.smallBusiness + nat.treasury.taxRevenue.corpoTax.largeCorpos +  nat.treasury.taxRevenue.salesTax +nat.treasury.taxRevenue.socialSecurityTax
+
+    for(let spen of Object.keys(nat.spending)){
+        nat.spending[spen] =  nat.treasury.taxRevenue.total * dfSet.spendingStandards[spen];
+    }
+
+    return nat;
 }
