@@ -8,6 +8,8 @@ export const createCountry = async (req, res, next) =>{
         console.log(req.body)
         let RES = await Country.create(req.body);
         RES = await Country.findByIdAndUpdate( RES._id, countryGenerator(RES), { runValidators: false });
+        // cronJobData = {name: RES.name, _id: RES._id}
+        // Start countries cron job
         res.status(201).json(RES);
         console.log(RES);
     }

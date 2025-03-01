@@ -264,24 +264,24 @@ export default function countryGenerator(nat){
         nat.population - nat.demographics.ageRange.children - nat.demographics.ageRange.young -nat.demographics.ageRange.middleAged;
     
     nat.demographics.gradeSchoolStudents = 
-        nat.demographics.ageRange.children * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 20, nat.treasury.economicCapability)));
+        nat.demographics.ageRange.children * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 20, nat.treasury.economicCapability))) |0;
     
     nat.demographics.universityStudents = 
-        nat.demographics.ageRange.young * (0.01*(dfSet.gradeSchoolModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 6, nat.treasury.economicCapability)));
+        nat.demographics.ageRange.young * (0.01*(dfSet.universityModifier - linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 1, 6, nat.treasury.economicCapability))) |0;
 
-    nat.demographics.workingAge = nat.demographics .ageRange.young + nat.demographics.ageRange.middleAged;
+    nat.demographics.workingAge = nat.demographics.ageRange.young + nat.demographics.ageRange.middleAged;
     nat.demographics.unemployedPop = 
         nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 12, nat.treasury.economicCapability)));
     nat.demographics.disabledPop = 
-        nat.demographics.workingAge * (0.01*(dfSet.unEmplModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 5, nat.treasury.economicCapability)));
-    nat.demographics.workingReal = nat.demographics.workingAge - nat.demographics.unemployedPop - nat.demographics.disabledPop;
+        nat.demographics.workingAge * (0.01*(dfSet.disabledModifier + linearMappingScale(dfSet.econCapabilityLow, dfSet.econCapabilityHigh, 0, 5, nat.treasury.economicCapability)));
+    nat.demographics.workingReal = nat.demographics.workingAge - nat.demographics.unemployedPop - nat.demographics.disabledPop - nat.demographics.universityStudents;
 
-    nat.demographics.profession.workingClass = nat.demographics.workingReal * ( 0.01* (dfSet.professionModifiers.wc + genNumRange(0,8)) );
-    nat.demographics.profession.managerial = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.mng);
-    nat.demographics.profession.publicSector = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ps);
-    nat.demographics.profession.teaching = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.t);
-    nat.demographics.profession.medicine = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.med);
-    nat.demographics.profession.highTech = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ht);
+    nat.demographics.profession.workingClass = nat.demographics.workingReal * ( 0.01* (dfSet.professionModifiers.wc + genNumRange(0,8)) ) | 0;
+    nat.demographics.profession.managerial = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.mng) | 0;
+    nat.demographics.profession.publicSector = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ps) | 0;
+    nat.demographics.profession.teaching = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.t) | 0;
+    nat.demographics.profession.medicine = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.med) | 0;
+    nat.demographics.profession.highTech = nat.demographics.workingReal * (0.01 * dfSet.professionModifiers.ht) | 0;
     nat.demographics.profession.military = 
         nat.demographics.workingReal - nat.demographics.profession.workingClass - nat.demographics.profession.managerial - nat.demographics.profession.publicSector - nat.demographics.profession.teaching - nat.demographics.profession.medicine - nat.demographics.profession.highTech;
 
