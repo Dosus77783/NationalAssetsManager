@@ -3,19 +3,15 @@ import Country from "../models/country.model.js";
 
 const TIMEFRAME = '* * * * *'; // Using Cron job timeframe strings. Currently calls job every minute.
 
-cron.schedule( TIMEFRAME, cycleLogic, {scheduled: true } )
-// console.log(cron.getTasks().entries())
-
-
-function createJobCycle(cronJobData){
+export default function createJobCycle(cronJobData){
 
     cron.schedule( TIMEFRAME, async () => cycleLogic(cronJobData), { name: cronJobData.name, scheduled: true } )
 }
 
-
 async function cycleLogic(cronJobData){
-    console.log("Job Report!", cronJobData.name, cronJobData._id, " -- TimeStamp:", new Date().toISOString);
+    console.log("Job Report!", "Name:", cronJobData.name, cronJobData._id, " -- TimeStamp:", new Date());
 
+    // CONSTANTS FOR LOGIC
     const NAT = await Country.findById( cronJobData._id );
     const popDiff = NAT.birthRate.daily - NAT.deathRate.daily;
     const popDiffMaleFemale = popDiff/2 |0;
@@ -29,6 +25,7 @@ async function cycleLogic(cronJobData){
     const teachingPercent = NAT.demographics.profession.teaching/NAT.demographics.workingReal;
     const medicinePercent = NAT.demographics.profession.medicine/NAT.demographics.workingReal;
     const highTechPercent = NAT.demographics.profession.highTech/NAT.demographics.workingReal;
+    const neutralHealthCare = (NAT.population * NAT.setProps.healthcarePerCapita)/365 |0; 
 
     NAT.population += popDiff;
 
@@ -59,7 +56,41 @@ async function cycleLogic(cronJobData){
         NAT.demographics.profession.managerial - NAT.demographics.profession.publicSector - 
         NAT.demographics.profession.teaching - NAT.demographics.profession.medicine - NAT.demographics.profession.highTech;
 
-    // BIRTH RATES & DEATH RATES
-    
+    // BIRTH RATE & DEATH RATE UPDATE
 
+    NAT.birthRate.spendingDiff += (((NAT.spending.healthcare - neutralHealthCare)/neutralHealthCare) * 0.0001).toFixed(7) ;
+    NAT.birthRate.daily += (NAT.birthRate.daily * NAT.birthRate.spendingDiff).toFixed(4);
+    NAT.birthRate.totalYearly = NAT.birthRate.daily * 365;
+    NAT.birthRate.cbr = (NAT.birthRate.daily * 365000) / NAT.population;
+
+    NAT.deathRate.spendingDiff -= (((NAT.spending.healthcare - neutralHealthCare)/neutralHealthCare) * 0.00001).toFixed(7) ;
+    NAT.deathRate.daily += (NAT.deathRate.daily * NAT.deathRate.spendingDiff).toFixed(4);
+    NAT.deathRate.totalYearly = NAT.deathRate.daily * 365;
+    NAT.deathRate.cbr = (NAT.deathRate.daily * 365000) / NAT.population;
+
+    // TAXES AND REVENUE
+
+    NAT.treasury.taxRevenue.socialSecurityTax = 0;
+    NAT.treasury.taxRevenue.total = 0;
+
+    for(let prof of Object.keys(NAT.treasury.taxRevenue.incomeTax)){
+        let profSalary = ((NAT.treasury.countryProfits.incomeSalaryAvg[prof] * 1000)  * NAT.demographics.profession[prof]) 
+
+        NAT.treasury.taxRevenue.incomeTax[prof] = profSalary * NAT.taxes.incomeTax;
+        NAT.treasury.taxRevenue.socialSecurityTax += profSalary * NAT.taxes.socialSecurityTax
+
+        NAT.treasury.taxRevenue.total += NAT.treasury.taxRevenue.incomeTax[prof]
+    }
+
+    NAT.treasury.taxRevenue.salesTax = NAT.treasury.countryProfits.consumerGoodsConsumption * NAT.taxes.salesTax;
+
+    NAT.treasury.taxRevenue.total += 
+        NAT.treasury.taxRevenue.corpoTax.smallBusiness + NAT.treasury.taxRevenue.corpoTax.largeCorpos + 
+        NAT.treasury.taxRevenue.salesTax + NAT.treasury.taxRevenue.socialSecurityTax;
+
+    for(let spen of Object.keys(NAT.spending)){
+        NAT.spending[spen] =  NAT.treasury.taxRevenue.total * NAT.setProps.spendingStandards[spen];
+    }
+
+    return Country.findByIdAndUpdate( NAT._id, NAT, { runValidators: false });
 }

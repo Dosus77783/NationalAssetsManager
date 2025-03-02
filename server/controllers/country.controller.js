@@ -1,5 +1,6 @@
 import Country from "../models/country.model.js";
 import countryGenerator from "../util/countrygen.js"
+import createJobCycle from "../util/cycleReproduction.js"
 
 // POST
 
@@ -8,10 +9,9 @@ export const createCountry = async (req, res, next) =>{
         console.log(req.body)
         let RES = await Country.create(req.body);
         RES = await Country.findByIdAndUpdate( RES._id, countryGenerator(RES), { runValidators: false });
-        // cronJobData = {name: RES.name, _id: RES._id}
-        // Start countries cron job
+        createJobCycle( {name: RES.name, _id: RES._id} );
+
         res.status(201).json(RES);
-        console.log(RES);
     }
     catch(error){
         console.log(error)

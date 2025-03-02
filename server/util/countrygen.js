@@ -23,6 +23,7 @@ const DEVELOPING = {
     birthCBR:{low:25, high:40}, // birth and death rates per 1000/year
     deathCDR:{low:8, high:15 },
     spendingStandards:{healthcare:0.10, education:0.12, infrastructure: 0.40, familySubsidy: 0.05, socialAssistance:0.05}, // Starter spending defaults.
+    healthcarePerCapita: 500, // Standard Spending per capita. Used for updater function PER YEAR
     electricalDemand:280, //megaWatts per 100,000 per day
     electricalProductionModifier:0.75, // corporation amount uses genNumRange, this modifyier is multiplied to the base after genNumRange
     steelDemand:200, // tons of steel per 100,000 per day
@@ -61,6 +62,7 @@ const INDUSTRIAL = {
     birthCBR:{low:15, high:25}, // birth and death rates per 1000/year
     deathCDR:{low:6, high:10 },
     spendingStandards:{healthcare:0.18, education:0.15, infrastructure: 0.30, familySubsidy: 0.10, socialAssistance:0.10}, // Starter spending defaults.
+    healthcarePerCapita: 4000, // Standard Spending per capita. Used for updater function PER YEAR
     electricalDemand:1300, //megaWatts per 100,000 per day
     electricalProductionModifier:1.2,
     steelDemand:1000, // tons of steel per 100,000 per day
@@ -99,6 +101,7 @@ const MODERN = {
     birthCBR:{low:8, high:15}, // birth and death rates per 1000/year
     deathCDR:{low:8, high:12},
     spendingStandards:{healthcare:0.25, education:0.18, infrastructure: 0.20, familySubsidy: 0.15, socialAssistance:0.15}, // Starter spending defaults.
+    healthcarePerCapita: 10000, // Standard Spending per capita. Used for updater function PER YEAR
     electricalDemand:3700, //megaWatts per 100,000 per day
     electricalProductionModifier:1.5,
     steelDemand:2500, // tons of steel per 100,000 per day
@@ -188,6 +191,7 @@ export default function countryGenerator(nat){
         default: console.log("Something is Wrong with the difficulty")
     }
 
+    nat.setProps = dfSet;
     nat.population = genNumRange(dfSet.popLow, dfSet.popHigh) * 1000000;
 
     nat.treasury.economicCapability = genNumRange(dfSet.econCapabilityLow,dfSet.econCapabilityHigh);
@@ -312,13 +316,13 @@ export default function countryGenerator(nat){
         }
     }
 
-    nat.treasury.current = genNumRange(1000000,55000000); // Some what arbitrary number but its the starting treasury the nation recieves at the beginning
+    nat.treasury.current = genNumRange(1000000,555000000); // Some what arbitrary number but its the starting treasury the nation recieves at the beginning
 
     for(let prof of Object.keys(nat.treasury.taxRevenue.incomeTax)){
-        let temp = ((nat.treasury.countryProfits.incomeSalaryAvg[prof] * 1000)  * nat.demographics.profession[prof]) 
+        let profSalary = ((nat.treasury.countryProfits.incomeSalaryAvg[prof] * 1000)  * nat.demographics.profession[prof]) 
 
-        nat.treasury.taxRevenue.incomeTax[prof] = temp * nat.taxes.incomeTax;
-        nat.treasury.taxRevenue.socialSecurityTax += temp * nat.taxes.socialSecurityTax
+        nat.treasury.taxRevenue.incomeTax[prof] = profSalary * nat.taxes.incomeTax;
+        nat.treasury.taxRevenue.socialSecurityTax += profSalary * nat.taxes.socialSecurityTax
 
         nat.treasury.taxRevenue.total += nat.treasury.taxRevenue.incomeTax[prof]
     }
@@ -329,7 +333,8 @@ export default function countryGenerator(nat){
     nat.treasury.taxRevenue.salesTax = nat.treasury.countryProfits.consumerGoodsConsumption * nat.taxes.salesTax;
 
     nat.treasury.taxRevenue.total += 
-        nat.treasury.taxRevenue.corpoTax.smallBusiness + nat.treasury.taxRevenue.corpoTax.largeCorpos +  nat.treasury.taxRevenue.salesTax +nat.treasury.taxRevenue.socialSecurityTax
+        nat.treasury.taxRevenue.corpoTax.smallBusiness + nat.treasury.taxRevenue.corpoTax.largeCorpos + 
+        nat.treasury.taxRevenue.salesTax + nat.treasury.taxRevenue.socialSecurityTax;
 
     for(let spen of Object.keys(nat.spending)){
         nat.spending[spen] =  nat.treasury.taxRevenue.total * dfSet.spendingStandards[spen];

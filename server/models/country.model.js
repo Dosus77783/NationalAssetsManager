@@ -19,6 +19,7 @@ const CountrySchema = new Schema(
             enum:["Random", "Developing", "Industrial", "Modern"],
             default:"Random"
         },
+        setProps:{type:Object, default:{}},
         land:{
             type:[[String]], 
             default:[]
@@ -56,12 +57,14 @@ const CountrySchema = new Schema(
         birthRate:{
             daily:{type:Number, default:0},
             cbr:{type:Number, default:0}, // crude birth rate
-            totalYearly:{type:Number, default:0} //daily multiplied by 365
+            totalYearly:{type:Number, default:0}, //daily multiplied by 365
+            spendingDiff:{type:Number, default:0} // a decimal which changes daily based on spending & populatiopn, will then be used to change daily birth/deaths. Negative means birthRates are lowering.
         },
         deathRate:{
             daily:{type:Number, default:0},
             cdr:{type:Number, default:0}, // crude death rate
-            totalYearly:{type:Number, default:0} //daily multiplied by 365
+            totalYearly:{type:Number, default:0}, //daily multiplied by 365
+            spendingDiff:{type:Number, default:0} // a decimal which changes daily based on spending & populatiopn, will then be used to change daily birth/deaths. Negative means death rate is lowering
         },
         industries:{ // describes how many large, and small businesses a country has, as well as their production and demand for an industry
             totalSmallBusiness:{type:Number, default:0 },
