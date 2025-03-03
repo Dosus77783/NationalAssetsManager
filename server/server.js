@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import dbConnect from './config/mongoose.config.js' 
 import countryRouter from './routes/country.routes.js'
 import { notFoundError, normalizeErrors } from './util/errorhandling.js'
+import { restartJobs } from './util/cycleReproduction.js'
 
 const app = express();
 app.use( express.json(), cors() )
@@ -14,6 +15,7 @@ dotenv.config()
 const PORT = process.env.PORT
 
 dbConnect()
+restartJobs();
 
 app.listen(PORT, () =>{
     console.log(`Simulation Nation Project, Port: ${PORT}`)
