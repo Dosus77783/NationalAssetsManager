@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// const PATIENT_INSTANCE = axios.create({
-//     baseURL:"http://localhost:8004/patients/api"
-// })
+const COUNTRY_INSTANCE = axios.create({
+    baseURL:"http://localhost:8004/country/api"
+})
 
 // export async function getAllPatients(){
 //     return await PATIENT_INSTANCE.get("/")
