@@ -51,7 +51,7 @@ export const loginUserByCridentials = async (req, res, next) => {
         res.cookie("usertoken", userToken, { httpOnly: true })
         // secure: process.env.NODE_ENV === 'production',       // Ensures the cookie is only sent over HTTPS in production
         // sameSite: 'strict', });                              // Prevents the cookie from being sent in cross-site requests
-        .json( { message:"Succesful Login!"} ); 
+        .json( USER ); 
 
     }
     catch(error){

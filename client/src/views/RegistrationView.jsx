@@ -1,18 +1,14 @@
-// import { useEffect } from "react";
-// import Form from "../components/Form";
-// import { usePatientsContext } from "../context/PatientsContext";
-// import { createPatient, editPatientById, getPatientById, getPatientCount } from "../services/patientServices";
-
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { userContext } from "../context/userContext.jsx";
 import { useNavigate } from "react-router-dom";
-import NavButton from "../components/NavButton.jsx";
 import RegForm from "../components/RegForm.jsx";
 import { registerUser } from '../services/userServices.js';
 
 export default function RegistrationView(){
+    const {user, setUser} = useContext(userContext);
     const navigate = useNavigate();
-    const REGDEFAULT = { username: "", email:"", password:"", confirmPassword:"", valMsgs:{ validationErrors:{} } };
-    const [regFormData, setRegFormData] = useState( REGDEFAULT );
+    const REG_DEFAULT = { username: "", email:"", password:"", confirmPassword:"", valMsgs:{ validationErrors:{} } };
+    const [regFormData, setRegFormData] = useState( REG_DEFAULT );
 
     const onFormChange = (e) => {
         const { name, value } = e.target;
@@ -24,9 +20,9 @@ export default function RegistrationView(){
         console.log(regFormData, "in Registration FORM SUBMIT")
         registerUser( regFormData )
             .then( res => {
-                navigate("/")
-                console.log(res)
-                setRegFormData( REGDEFAULT )
+                navigate("/dashboard")
+                setUser(res.data);
+                setRegFormData( REG_DEFAULT )
             })
             .catch( err => {
                 console.log(err, "in Registration IN CATCH")

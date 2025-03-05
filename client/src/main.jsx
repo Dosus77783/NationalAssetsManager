@@ -5,11 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import './index.css'
 import App from './App.jsx'
+import { UserProvider } from './context/userContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <StrictMode>
-      <App />
-    </StrictMode>
-  </BrowserRouter>
+  <StrictMode>
+    <BrowserRouter>
+      <UserProvider>
+          <App />
+      </UserProvider>
+    </BrowserRouter>
+  </StrictMode>
 )

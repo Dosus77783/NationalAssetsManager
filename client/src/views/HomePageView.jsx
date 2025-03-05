@@ -1,18 +1,15 @@
-// import { useEffect } from "react";
-// import Form from "../components/Form";
-// import { usePatientsContext } from "../context/PatientsContext";
-// import { createPatient, editPatientById, getPatientById, getPatientCount } from "../services/patientServices";
-
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from '../services/userServices.js';
+import { userContext } from "../context/userContext.jsx";
 import LoginForm  from "../components/LoginForm";
 import NavButton from "../components/NavButton";
-import { loginUser } from '../services/userServices.js';
 
 export default function HomePageView(){
+    const {user, setUser} = useContext(userContext);
     const navigate = useNavigate();
-    const LOGINDEFAULT = { email:"", password:"", valMsgs:{ validationErrors:{} } };
-    const [loginFormData, setLoginFormData] = useState( LOGINDEFAULT );
+    const LOGIN_DEFAULT = { email:"", password:"", valMsgs:{ validationErrors:{} } };
+    const [loginFormData, setLoginFormData] = useState( LOGIN_DEFAULT );
 
     
     const onFormChange = (e) => {
@@ -20,46 +17,15 @@ export default function HomePageView(){
         setLoginFormData( prevObj => ( {...prevObj, [name]:value, valMsgs:{ validationErrors:{} }  } ))
     }
 
-
-    // useEffect(()=>{
-
-    //     if( route == "create"    ){
-    //         dispatch( {
-    //             type:"updateView", 
-    //             payload:{ header:"Admit Patient", btnMsg:""}
-    //         } )
-    //     }else{
-    //         getPatientById( id )
-    //             .then( res => {
-    //                 dispatch({
-    //                     type:"updateView", 
-    //                     payload:{ 
-    //                         header:`Update ${res.patientName}`, 
-    //                         btnMsg:"Details", 
-    //                         navLocation: `/${id}/details`}
-    //                 })
-    //                 dispatch({
-    //                     type:"prePopulateForm",
-    //                     payload: res
-    //                 })
-    //             })
-    //             .catch( err => dispatch({
-    //                 type: "updateValidations", 
-    //                 payload: err.response.data 
-    //             }))
-    //     }
-
-    // }, [route, id])
-
-
     const formSubmition = (e) => {
         e.preventDefault();
         console.log(loginFormData, "in HomePageView FORM SUBMIT")
         loginUser( loginFormData )
             .then( res => {
-                navigate("/")
                 console.log(res)
-                setLoginFormData( LOGINDEFAULT )
+                setUser(res);
+                setLoginFormData( LOGIN_DEFAULT )
+                navigate("/dashboard")
             })
             .catch( err => {
                 console.log(err, "in HomePageView IN CATCH")

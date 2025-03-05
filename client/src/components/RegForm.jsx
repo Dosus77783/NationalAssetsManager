@@ -21,7 +21,7 @@ export default function RegForm( {formData, onFormChange, formSubmition} ){
                     <input name="password" type="password" className="form-control" id="regPassword1" onChange={ onFormChange } value={formData.password} />
 
                     {formData.valMsgs.name && <p className="valMsgs">{formData.valMsgs.validationErrors.confirmPassword}</p>}
-                    <label htmlFor="regConfirm1" className="form-label">Email:</label>
+                    <label htmlFor="regConfirm1" className="form-label">Confirm Password:</label>
                     <input name="confirmPassword" type="password" className="form-control" id="regConfirm1" onChange={ onFormChange } value={formData.confirmPassword} />
 
                     <button id="formBtn" type="submit" >Register</button>

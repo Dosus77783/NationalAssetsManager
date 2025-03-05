@@ -1,8 +1,5 @@
 import { model, Schema } from "mongoose";
 import bcrypt from 'bcrypt'
-// import validator from 'validator'
-
-// const isEmail = validator;
 
 const UserSchema = new Schema({
     username: {
