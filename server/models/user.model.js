@@ -1,19 +1,24 @@
 import { model, Schema } from "mongoose";
 import bcrypt from 'bcrypt'
+// import validator from 'validator'
+
+// const isEmail = validator;
 
 const UserSchema = new Schema({
     username: {
         type: String,
         required: [true, "A Username is required!"],
-        minlength: [3, "A Username must be 3 characters or longer!"]
+        minlength: [3, "A Username must be 3 characters or longer!"],
+        unique: [true, "Username already exists!"]
     },
     email: {
         type: String,
         required: [true, "An Email is required"],
         validate: {
             validator: (val) => /^([\w-\.]+@([\w-]+\.)+[\w-]+)$/.test(val),
-            message: "Please enter a valid email!"
-        }
+            message: "Please enter a valid email!"},
+        // [isEmail, "Please enter a valid email!" ],
+        unique: [true, "This Email already exists!"]
     },
     password: {
         type: String,
@@ -35,10 +40,10 @@ UserSchema.pre("validate", function(next) {
 
 UserSchema.pre('save', function(next){
     bcrypt.hash(this.password, 10)
-            .then(hash => {
-                this.password = hash;
-                next();
-            });
+        .then(hash => {
+            this.password = hash;
+            next();
+        });
 });
 
 const User = model("User", UserSchema);

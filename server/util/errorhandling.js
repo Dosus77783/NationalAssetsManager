@@ -9,6 +9,9 @@ function extValErrors(err) {
             }
         }
     }
+    if( err.name === "MongooseError" ){
+        validationErrors[Object.keys(err.cause.keyPattern)[0]] = err.message;
+    }
     return validationErrors;
 }
 
@@ -23,7 +26,7 @@ export function notFoundError(req, res, next){
 export function normalizeErrors(err, req, res, next){
     console.log("inside normalizeErrors--------------------------------")
 
-    err.name === "ValidationError" ? err.statusCode = 400 : "";
+    if(err.name === "ValidationError"){ err.statusCode = 400 ; } 
 
     const normalizedError = {
         statusCode: err.statusCode || 500,

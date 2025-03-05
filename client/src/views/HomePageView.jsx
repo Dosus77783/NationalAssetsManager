@@ -1,21 +1,27 @@
 // import { useEffect } from "react";
 // import Form from "../components/Form";
-// import { useNavigate, useParams } from "react-router-dom"
 // import { usePatientsContext } from "../context/PatientsContext";
 // import { createPatient, editPatientById, getPatientById, getPatientCount } from "../services/patientServices";
 
-import { NavButton } from "../components/NavButton";
-import LoginForm from "../components/LoginForm";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LoginForm  from "../components/LoginForm";
+import NavButton from "../components/NavButton";
+import { loginUser } from '../services/userServices.js';
 
-export function HomePageView(){
-    // const navigate = useNavigate();
-    // const { id } = useParams();
-    // const { formData, dispatch } = usePatientsContext();
+export default function HomePageView(){
+    const navigate = useNavigate();
+    const LOGINDEFAULT = { email:"", password:"", valMsgs:{ validationErrors:{} } };
+    const [loginFormData, setLoginFormData] = useState( LOGINDEFAULT );
+
+    
+    const onFormChange = (e) => {
+        const { name, value } = e.target;
+        setLoginFormData( prevObj => ( {...prevObj, [name]:value, valMsgs:{ validationErrors:{} }  } ))
+    }
+
 
     // useEffect(()=>{
-    //     getPatientCount()
-    //         .then( res => dispatch({type:"setCount", payload: res}) )
-    //         .catch( err => console.log(err) )
 
     //     if( route == "create"    ){
     //         dispatch( {
@@ -45,38 +51,33 @@ export function HomePageView(){
 
     // }, [route, id])
 
-    // const onFormChange = (e) => dispatch( {type:"onFormChange", payload: e } )
 
-    // const formSubmition = (e) => {
-    //     e.preventDefault();
-
-    //     const formFunction = route == "create"
-    //         ? () => createPatient( formData )
-    //         : () => editPatientById( id , formData );
-    //     formFunction()
-    //         .then( res => {
-    //             route == "create"
-    //                 ? navigate("/patients")
-    //                 : navigate(`/${id}/details`)
-                    
-    //             dispatch( {type: "resetForm"} )
-    //         })
-    //         .catch( err => {
-    //             dispatch( {type: "updateValidations", payload: err.response.data } )
-    //         })
-    // }
+    const formSubmition = (e) => {
+        e.preventDefault();
+        console.log(loginFormData, "in HomePageView FORM SUBMIT")
+        loginUser( loginFormData )
+            .then( res => {
+                navigate("/")
+                console.log(res)
+                setLoginFormData( LOGINDEFAULT )
+            })
+            .catch( err => {
+                console.log(err, "in HomePageView IN CATCH")
+                console.log(err.response.data, "in HomePageView IN DATA")
+                setLoginFormData( prevObj => ({...prevObj, valMsgs: err.response.data, }) );
+            });
+    }
 
 
     return(
         <>
             <div className="border border-dark border-3">
-                <LoginForm />
+                <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
                 <p>
                     Don't have a login?
                     <NavButton btnText={"Register"} navigation={"/registration"} />
                 </p>
             </div>
-        
         </>
     )
 }

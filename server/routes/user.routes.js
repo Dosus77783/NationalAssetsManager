@@ -1,11 +1,15 @@
 import { Router } from "express"
-import { registerUser } from "../controllers/user.controller.js";
+import { registerUser, loginUserByCridentials, logout, getLoggedInUser } from "../controllers/user.controller.js";
+// import authenticate from '../config/jwt.config.js'
 
 const userRouter = Router();
 
-userRouter.route("/")
-    // .get( getAllPatients )
-    .post( registerUser )
+userRouter.route("/register").post( registerUser )
+userRouter.route("/login").post( loginUserByCridentials )
+userRouter.route("/logout").post( logout )
+
+userRouter.route("/:id")
+    .get( getLoggedInUser )
 
 // countryRouter.route("/:id")
 //     .get( getPatientById )
