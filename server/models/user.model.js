@@ -14,14 +14,14 @@ const UserSchema = new Schema({
         validate: {
             validator: (val) => /^([\w-\.]+@([\w-]+\.)+[\w-]+)$/.test(val),
             message: "Please enter a valid email!"},
-        // [isEmail, "Please enter a valid email!" ],
         unique: [true, "This Email already exists!"]
     },
     password: {
         type: String,
         required: [true, "A Password is required"],
         minlength: [8, "Password must be 8 characters or longer"]
-    }
+    },
+    countries: [{ type: Schema.Types.ObjectId, ref: 'Country' }]
 }, {timestamps: true});
 
 UserSchema.virtual("confirmPassword")

@@ -5,17 +5,17 @@ const TIMEFRAME = '* * * * *'; // Using Cron job timeframe strings. Currently ca
 
 export default function createJobCycle(cronJobData){
 
-    cron.schedule( TIMEFRAME, async () => await cycleLogic(cronJobData), { name: cronJobData.name, scheduled: true } );
+    cron.schedule( TIMEFRAME, async () => await cycleLogic(cronJobData), { name: cronJobData.countryName, scheduled: true } );
 }
 
 export async function restartJobs(){
 
     try{
-        const RES = await Country.find( {}, { _id:1, name:1 } );
+        const RES = await Country.find( {}, { _id:1, countryName:1 } );
         console.log(RES);
         if(RES.length === 0){ return; }
         
-        RES.forEach( elem => cron.schedule(TIMEFRAME, async () => await cycleLogic(elem), { name: elem.name, scheduled: true } ) );
+        RES.forEach( elem => cron.schedule(TIMEFRAME, async () => await cycleLogic(elem), { name: elem.countryName, scheduled: true } ) );
         
     }
     catch(error){
@@ -24,7 +24,7 @@ export async function restartJobs(){
 }
 
 async function cycleLogic(cronJobData){
-    console.log("Job Report!", "Name:", cronJobData.name, cronJobData._id, " -- TimeStamp:", new Date());
+    console.log("Job Report!", "Name:", cronJobData.countryName, cronJobData._id, " -- TimeStamp:", new Date());
 
     try{
         // CONSTANTS FOR LOGIC
@@ -112,6 +112,6 @@ async function cycleLogic(cronJobData){
 
     }
     catch(error){
-        console.log("Cycle Logic Function----", cronJobData.name, error)
+        console.log("Cycle Logic Function----", cronJobData.countryName, error)
     }
 }

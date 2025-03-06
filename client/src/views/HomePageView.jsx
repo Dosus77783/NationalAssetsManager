@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from '../services/userServices.js';
+import { autoLogin, loginUser } from '../services/userServices.js';
 import { userContext } from "../context/userContext.jsx";
 import LoginForm  from "../components/LoginForm";
 import NavButton from "../components/NavButton";
@@ -10,6 +10,22 @@ export default function HomePageView(){
     const navigate = useNavigate();
     const LOGIN_DEFAULT = { email:"", password:"", valMsgs:{ validationErrors:{} } };
     const [loginFormData, setLoginFormData] = useState( LOGIN_DEFAULT );
+
+    useEffect( () => {
+
+        if(Object.keys(user).length === 1 ){
+            navigate("/dashboard") 
+        }
+
+        autoLogin()
+        .then( (res) => {
+            setUser(res)
+            navigate("/dashboard")
+            return;
+        } )
+        .catch( (err) => console.log(err))
+
+    }, [])
 
     
     const onFormChange = (e) => {

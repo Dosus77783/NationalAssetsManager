@@ -1,8 +1,29 @@
 import axios from 'axios'
 
 const COUNTRY_INSTANCE = axios.create({
-    baseURL:"http://localhost:8004/country/api"
+    baseURL:"http://localhost:8008/country/api"
 })
+
+// POST
+export async function createCountryService(formData){
+    return await COUNTRY_INSTANCE.post("/",formData, { withCredentials: true} )
+    .then( res => res.data)
+    .catch( error => {throw error})
+}
+
+// GET
+export async function getUserCountryDashboard(){
+    return await COUNTRY_INSTANCE.get("/user/dashboard" , { withCredentials: true})
+        .then( res => res.data)
+        .catch( error => {throw error})
+}
+
+export async function getUserCountryById(id){
+    return await COUNTRY_INSTANCE.get("/" + id , { withCredentials: true})
+        .then( res => res.data)
+        .catch( error => {throw error})
+}
+
 
 // export async function getAllPatients(){
 //     return await PATIENT_INSTANCE.get("/")
@@ -10,11 +31,6 @@ const COUNTRY_INSTANCE = axios.create({
 //         .catch( error => {throw error})
 // }
 
-// export async function createPatient(data){
-//     return await PATIENT_INSTANCE.post("/",data)
-//     .then( res => res.data)
-//     .catch( error => {throw error})
-// }
 
 // export async function editPatientById(id, data){
 //     return await PATIENT_INSTANCE.put(`/${id}`, data)

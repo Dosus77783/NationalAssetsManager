@@ -21,7 +21,7 @@ export default function RegistrationView(){
         registerUser( regFormData )
             .then( res => {
                 navigate("/dashboard")
-                setUser(res.data);
+                setUser(res);
                 setRegFormData( REG_DEFAULT )
             })
             .catch( err => {

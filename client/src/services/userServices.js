@@ -4,7 +4,7 @@ const USER_INSTANCE = axios.create({
     baseURL:"http://localhost:8008/user/api"
 })
 
-
+// LOGIN
 export async function loginUser(formData){
     try{
         const dataRES = await USER_INSTANCE.post("/login", formData, { withCredentials: true} )
@@ -18,6 +18,20 @@ export async function loginUser(formData){
     }
 }
 
+export async function autoLogin(){
+    try{
+        const dataRES = await USER_INSTANCE.get("/", { withCredentials: true} )
+        console.log(dataRES)
+        return dataRES.data
+
+    }catch(error){
+        console.log("in userServices CATCH ----- AUTO LOGIN")
+        throw error
+
+    }
+}
+
+// LOGOUT
 export async function logoutUser(){
     try{
         const dataRES = await USER_INSTANCE.post("/logout", {} , { withCredentials: true} )
@@ -31,6 +45,8 @@ export async function logoutUser(){
     }
 }
 
+
+// REGISTER
 export async function registerUser(formData){
     try{
         const dataRES = await USER_INSTANCE.post("/register", formData, { withCredentials: true} )

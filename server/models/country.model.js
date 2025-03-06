@@ -2,8 +2,12 @@ import { model, Schema } from "mongoose";
 
 const CountrySchema = new Schema(
     {
-        owner:String,
-        name:{
+        userId: { 
+            type: Schema.Types.ObjectId, 
+            ref: 'User',
+            required: [true, "User Id Required"]
+        },
+        countryName:{
             type: String,
             required: [true, "A Country must have a name."],
             minlength: [2, "A Countries name cannot be more then 2 characters long"],
@@ -17,7 +21,7 @@ const CountrySchema = new Schema(
         difficulty:{
             type:String,
             enum:["Random", "Developing", "Industrial", "Modern"],
-            default:"Random"
+            default:"Random",
         },
         setProps:{type:Object, default:{}},
         land:{

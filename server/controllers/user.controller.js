@@ -60,6 +60,25 @@ export const loginUserByCridentials = async (req, res, next) => {
     }
 }
 
+export const automaticLogin = async (req, res, next) => {
+    try{
+
+        if(!req.cookies.usertoken){ throw res.status(400) }
+
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------",decodedToken);
+        console.log("Req.Body ------------", req.body);
+        const userId = decodedToken.payload.userId;
+
+        const RES = await User.findById(userId)
+        res.status(200).json(RES)
+    }
+    catch(error){
+        console.log("in User Controller caught error ----- AUTOMATIC LOGIN")
+        next(error)
+    }
+}
+
 // LOGOUT
 
 export const logout = async (req, res, next) => {
