@@ -30,8 +30,6 @@ export default function CountryView(){
 
     }, [])
 
-
-
     return(
         <>
             <NationNavBar />

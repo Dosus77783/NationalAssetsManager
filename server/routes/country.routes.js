@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { createCountry, getAllCountriesAndUsers, getOneUserCountryComplex, getUserCountriesBasic } from "../controllers/country.controller.js"
+import { createCountry, editCountryTaxes, getAllCountriesAndUsers, getOneUserCountryComplex, getUserCountriesBasic, getUserCountryTaxes } from "../controllers/country.controller.js"
 
 const countryRouter = Router();
 
@@ -10,6 +10,9 @@ countryRouter.route("/:id")
     .get( getOneUserCountryComplex )
 //     .put( editPatientById )
 //     .delete( deletePatientById )
+countryRouter.route("/taxes/:id")
+    .get( getUserCountryTaxes )
+    .put( editCountryTaxes )
 countryRouter.route("/user/dashboard")
     .get( getUserCountriesBasic )
 

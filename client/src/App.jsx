@@ -6,6 +6,7 @@ import RegistrationView from './views/RegistrationView'
 import DashboardView from './views/DashboardView'
 import NationFormView from './views/NationFormView'
 import CountryView from './views/CountryView'
+import CountryTaxesView from './views/CountryTaxesView'
 
 function App() {
 
@@ -18,8 +19,8 @@ function App() {
         <Route path="/dashboard" element={<DashboardView />} />        
         <Route path="/newnation" element={<NationFormView />} />
         <Route path="/country/:id" element={<CountryView />} />
-        {/* <Route path="/country/settings/taxes/:id" element={<CountryTaxesView />} />
-        <Route path="/country/settings/spending/:id" element={<CountrySpendingView />} /> */}
+        <Route path="/country/settings/taxes/:id" element={<CountryTaxesView />} />
+        {/* <Route path="/country/settings/spending/:id" element={<CountrySpendingView />} /> */}
       </Routes>
     </>
   )

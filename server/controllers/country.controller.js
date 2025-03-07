@@ -67,6 +67,27 @@ export const getUserCountriesBasic = async (req, res, next) =>{
     }
 }
 
+export const getUserCountryTaxes = async (req, res, next) =>{
+    try{
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------",decodedToken);
+        console.log("Req.Body ------------", req.body);
+        const userId = decodedToken.payload.userId;
+
+        const COUNTRY = await Country.findById( req.params.id, 'taxes userId' );
+        if(COUNTRY.userId != userId){
+            throw res.status(400);
+        }
+
+        console.log("----Succesful Retrieval----", decodedToken.payload.username);
+        res.status(200).json(COUNTRY);
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
+
 export const getAllCountriesAndUsers = async (req, res, next) =>{
     try{
         const RES = await Country.find().populate('userId');
@@ -80,50 +101,33 @@ export const getAllCountriesAndUsers = async (req, res, next) =>{
 }
 
 
-// export const getPatientCount= async (req, res, next) =>{
-//     try{
-//         const RES = await Patient.countDocuments();
-//         res.status(200).json(RES);
-//     }
-//     catch(error){
-//         console.log(error)
-//         next(error)
-//     }
-// }
-
-
-// export const getPatientById = async (req, res, next) => {
-//     try{
-//         const RES = await Patient.findById( req.params.id );
-
-//         if(RES == null){throw null}
-//         res.status(200).json(RES);
-//     }
-//     catch(error){
-//         console.log(error)
-//         next(error)
-//     }
-// }
-
-
 // UPDATE
 
-// export const editPatientById = async (req, res, next) => {
-//     try{
-//         const RES = await Patient.findByIdAndUpdate(
-//             req.params.id, 
-//             req.body, 
-//             { runValidators: true }
-//         );
+export const editCountryTaxes = async (req, res, next) => {
+    try{
 
-//         if(RES == null){throw null}
-//         res.status(200).json(RES);
-//     }
-//     catch(error){
-//         console.log(error)
-//         next(error)
-//     }
-// }
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------",decodedToken);
+        console.log("Req.Body ------------", req.body);
+        const userId = decodedToken.payload.userId;
+
+        const COUNTRY = await Country.findById( req.params.id, 'userId' );
+        if(COUNTRY.userId != userId){
+            throw res.status(400);
+        }
+
+        const RES = await Country.findByIdAndUpdate(
+            req.params.id, 
+            {taxes: req.body}
+        );
+
+        res.status(200).json(RES);
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
 
 // DELETE
 

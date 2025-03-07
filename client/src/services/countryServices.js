@@ -24,6 +24,18 @@ export async function getUserCountryById(id){
         .catch( error => {throw error})
 }
 
+export async function getCountryTaxes(id){
+    return await COUNTRY_INSTANCE.get("/taxes/" + id , { withCredentials: true})
+        .then( res => res.data)
+        .catch( error => {throw error})
+}
+
+// UPDATE - PUT
+export async function updateCountryTaxes(id, data){
+    return await COUNTRY_INSTANCE.put("/taxes/" + id , data, { withCredentials: true})
+        .then( res => res.data)
+        .catch( error => {throw error})
+}
 
 // export async function getAllPatients(){
 //     return await PATIENT_INSTANCE.get("/")
