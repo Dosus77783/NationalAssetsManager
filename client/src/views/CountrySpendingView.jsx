@@ -1,23 +1,23 @@
 import { useContext, useState, useEffect } from "react";
 import { userContext } from "../context/userContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCountryTaxes, updateCountryTaxes } from "../services/countryServices";
+import { getCountrySpending, updateCountrySpending } from "../services/countryServices";
 import { autoLogin } from "../services/userServices";
-import TaxesForm from "../components/TaxesForm";
+import SpendingForm from "../components/SpendingForm";
 
-export default function CountryTaxesView(){
+export default function CountrySpendingView(){
     const {user, setUser} = useContext(userContext);
     const { id } = useParams();
     const navigate = useNavigate();
-    const DEFAULT_TAXES = { 
-        incomeTax:0.1,
-        smallBusinessTax: 0.15,
-        largeCorpoTax: 0.2,
-        salesTax: 0.05,
-        socialSecurityTax: 0.07,
+    const DEFAULT_SPENDING = { 
+        healthcare:0,
+        education: 0,
+        infrastructure: 0,
+        familySubsidy: 0,
+        socialAssistance: 0,
         valMsgs: { validationErrors: {} } 
     }
-    const [ taxesData, setTaxesData ] = useState( DEFAULT_TAXES );
+    const [ spendingData, setSpendingData ] = useState( DEFAULT_SPENDING );
 
     useEffect( ()=>{
         if(Object.keys(user).length === 0 ){
@@ -32,29 +32,31 @@ export default function CountryTaxesView(){
             })
         }
 
-        getCountryTaxes(id)
-            .then( (res) => setTaxesData( {...res.taxes, valMsgs: { validationErrors: {} } } ))
+        getCountrySpending(id)
+            .then( (res) => {
+                console.log(res)
+                setSpendingData( {...res.spending, treasury: res.treasury, valMsgs: { validationErrors: {} } } )})
             .catch( (err) => console.log(err) )
 
     }, [])
 
     const onFormChange = (e) => {
         const { name, value } = e.target;
-        setTaxesData( prevObj => ( {...prevObj, [name]: Number(value), valMsgs:{ validationErrors:{} }  } ))
+        setSpendingData( prevObj => ( {...prevObj, [name]: Number(value), valMsgs:{ validationErrors:{} }  } ))
     }
 
     const formSubmition = (e) => {
         e.preventDefault();
-        console.log(taxesData, "in Taxes FORM SUBMIT")
+        console.log(spendingData, "in Spending FORM SUBMIT")
 
-        updateCountryTaxes( id, taxesData )
+        updateCountrySpending( id, spendingData )
             .then( res => {
                 navigate("/country/" + id)
-                console.log(res, "in Taxes SUCCESS")
+                console.log(res, "in Spending SUCCESS")
             })
             .catch( err => {
-                console.log(err, "in Taxes IN CATCH")
-                console.log(err.response.data, "in Taxes IN DATA")
+                console.log(err, "in Spending IN CATCH")
+                console.log(err.response.data, "in Spending IN DATA")
                 setRegFormData( prevObj => ({...prevObj, valMsgs: err.response.data, }) );
             });
     }
@@ -62,9 +64,9 @@ export default function CountryTaxesView(){
     return(
         <>
             <div className="border border-dark border-2 rounded">
-                <h2>Taxes</h2>
+                <h2>Spending</h2>
             </div>
-            <TaxesForm formData={taxesData} onFormChange={onFormChange} formSubmition={formSubmition} />
+            <SpendingForm formData={spendingData} onFormChange={onFormChange} formSubmition={formSubmition} />
         </>
     )
 }

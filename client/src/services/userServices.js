@@ -21,7 +21,7 @@ export async function loginUser(formData){
 export async function autoLogin(){
     try{
         const dataRES = await USER_INSTANCE.get("/", { withCredentials: true} )
-        console.log(dataRES)
+        console.log(dataRES, "in userServices ------- AUTO LOGIN SUCCESS")
         return dataRES.data
 
     }catch(error){

@@ -79,7 +79,29 @@ export const getUserCountryTaxes = async (req, res, next) =>{
             throw res.status(400);
         }
 
-        console.log("----Succesful Retrieval----", decodedToken.payload.username);
+        console.log("----Succesful TAXES Retrieval----", decodedToken.payload.username);
+        res.status(200).json(COUNTRY);
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
+
+export const getUserCountrySpending = async (req, res, next) =>{
+    try{
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------SpendingGET",decodedToken);
+        console.log("Req.Body ------------SpendingGET");
+        const userId = decodedToken.payload.userId;
+
+        const COUNTRY = await Country.findById( req.params.id, { 'treasury.taxRevenue.total': 1, spending:1, userId:1} );
+        console.log(COUNTRY)
+        if(COUNTRY.userId != userId){
+            throw res.status(400);
+        }
+
+        console.log("----Succesful SPENDING Retrieval----", decodedToken.payload.username);
         res.status(200).json(COUNTRY);
     }
     catch(error){
@@ -119,6 +141,32 @@ export const editCountryTaxes = async (req, res, next) => {
         const RES = await Country.findByIdAndUpdate(
             req.params.id, 
             {taxes: req.body}
+        );
+
+        res.status(200).json(RES);
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}
+
+export const editCountrySpending = async (req, res, next) => {
+    try{
+
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------",decodedToken);
+        console.log("Req.Body ------------", req.body);
+        const userId = decodedToken.payload.userId;
+
+        const COUNTRY = await Country.findById( req.params.id, 'userId' );
+        if(COUNTRY.userId != userId){
+            throw res.status(400);
+        }
+
+        const RES = await Country.findByIdAndUpdate(
+            req.params.id, 
+            {spending: req.body}
         );
 
         res.status(200).json(RES);
