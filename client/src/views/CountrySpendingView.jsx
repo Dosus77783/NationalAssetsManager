@@ -63,8 +63,8 @@ export default function CountrySpendingView(){
 
     return(
         <>
-            <div className="border border-dark border-2 rounded">
-                <h2>Spending</h2>
+            <div className="border border-dark border-4 rounded mb-5 shadow-lg bg-secondary bg-opacity-75 bg-gradient">
+                <h2 className="display-4 fw-bold font-monospace" >Spending</h2>
             </div>
             <SpendingForm formData={spendingData} onFormChange={onFormChange} formSubmition={formSubmition} />
         </>

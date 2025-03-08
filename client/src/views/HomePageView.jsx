@@ -53,13 +53,14 @@ export default function HomePageView(){
 
     return(
         <>
-            <div className="border border-dark border-3">
+            <div className="border border-dark rounded border-3 d-flex justify-content-evenly bg-primary bg-opacity-50 shadow">
                 <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
-                <p>
+                <p className="fs-5 fw-bold d-flex flex-column my-auto">
                     Don't have a login?
                     <NavButton btnText={"Register"} navigation={"/registration"} />
                 </p>
             </div>
+            <img src="./src/assets/globe.png" alt="earth globe" className="border border-5 border-light rounded-circle mt-5 shadow-lg"/>
         </>
     )
 }

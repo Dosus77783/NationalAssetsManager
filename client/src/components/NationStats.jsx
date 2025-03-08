@@ -9,74 +9,198 @@ export default function NationStats( { data } ){
             totalSpending += data.spending[department];
         }
         totalIncome = data.treasury.taxRevenue.total - totalSpending;
-        posOrNeg = totalIncome > 0 ? "+":"-";
+        posOrNeg = totalIncome > 0 ? "+":"";
     }
     
     return(
         <>
-            <div className="border border-dark border-2" >
-                <h2>Nation Stats</h2>
-                <div>
-                    { data &&
-                    <>
-                        <div>
-                            <h3>{data.countryName}</h3>
-                            <ul>
-                                <li>Government: {data.government}</li>
-                                <li>Classification: {data.difficulty}</li>
-                                <li>Population: {data.population.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Daily Births: {data.birthRate.daily.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Daily Deaths: {data.deathRate.daily.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Total Corporations: {data.industries.totalLargeCorp}</li>
-                                <li>Total Small Businesses: {data.industries.totalSmallBusiness.toLocaleString()}</li>
-                                <li>Treasury: {data.treasury.current.toLocaleString()}</li>
-                                <li>Tax Revenue: {data.treasury.taxRevenue.total.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</li>
-                                <li>Total Spending: {totalSpending.toLocaleString( 'en-US', { maximumFractionDigits: 2 })}</li>
-                                <li>Total Income: {posOrNeg} {totalIncome.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
+            <div className="border border-dark border-4 rounded shadow-lg px-5 pt-1 mt-4 bg-primary bg-opacity-50 bg-gradient" >
+                <h2 className="display-5 fw-bold font-monospace text-decoration-underline">Nation Stats</h2>
+                { data &&
+                <>
+                    <h3 className="text-center fw-bold font-monospace">{data.countryName}</h3>
+                    <div className="text-start">
+                        <div className="row">
+                            <ul className="col me-4 px-5 py-3 fs-5 bg-secondary bg-opacity-50 bg-gradient rounded">
+                                <h4 className="text-decoration-underline">General</h4>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Government:</span>
+                                    <span className="fw-bold">{data.government}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Classification:</span>
+                                    <span className="fw-bold">{data.difficulty}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Population:</span>
+                                    <span className="fw-bold">{data.population.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Daily Births:</span>
+                                    <span className="fw-bold">{data.birthRate.daily.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Daily Deaths:</span>
+                                    <span className="fw-bold">{data.deathRate.daily.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Total Corporations:</span>
+                                    <span className="fw-bold">{data.industries.totalLargeCorp}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Total Small Businesses:</span>
+                                    <span className="fw-bold">{data.industries.totalSmallBusiness.toLocaleString()}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Treasury:</span>
+                                    <span className="fw-bold">{data.treasury.current.toLocaleString( 'en-US', { maximumFractionDigits: 2 } )}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Tax Revenue:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.total.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Total Spending:</span>
+                                    <span className="fw-bold">{totalSpending.toLocaleString( 'en-US', { maximumFractionDigits: 2 })}</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Total Income:</span>
+                                    <span className={ "badge p-2 "+(posOrNeg == "+" ? "bg-success" : "bg-danger")}>{posOrNeg} {totalIncome.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</span>
+                                </li>
+                            </ul>
+                            <ul className="col px-5 py-3 fs-5 bg-secondary bg-opacity-50 bg-gradient rounded">
+                                <h4 className="text-decoration-underline">Tax Revenue</h4>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - Working Class:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.workingClass.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - Managerial:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.managerial.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - Public Sector:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.publicSector.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - Teaching:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.teaching.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - Medicine:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.medicine.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Income - High Tech:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.incomeTax.highTech.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Small Business Profits:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.corpoTax.smallBusiness.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Largo Corp. Profits:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.corpoTax.largeCorpos.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Sales Tax:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.salesTax.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Social Security Tax:</span>
+                                    <span className="fw-bold">{data.treasury.taxRevenue.socialSecurityTax.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </span>
+                                </li>
                             </ul>
                         </div>
-                        <div>
-                            <h3>Tax Revenue</h3>
-                            <ul>
-                                <li>Income - Working Class: {data.treasury.taxRevenue.incomeTax.workingClass.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</li>
-                                <li>Income - Managerial: {data.treasury.taxRevenue.incomeTax.managerial.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Income - Public Sector: {data.treasury.taxRevenue.incomeTax.publicSector.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Income - Teaching: {data.treasury.taxRevenue.incomeTax.teaching.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Income - Medicine: {data.treasury.taxRevenue.incomeTax.medicine.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Income - High Tech: {data.treasury.taxRevenue.incomeTax.highTech.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Corporation Profits - Small Business : {data.treasury.taxRevenue.corpoTax.smallBusiness.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Corporation Profits - Largo Corp. : {data.treasury.taxRevenue.corpoTax.largeCorpos.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) } </li>
-                                <li>Sales Tax: {data.treasury.taxRevenue.salesTax.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</li>
-                                <li>Social Security Tax: {data.treasury.taxRevenue.socialSecurityTax.toLocaleString( 'en-US', { maximumFractionDigits: 2 }) }</li>
+                        <div className="row">
+                            <ul className="col px-5 py-3 fs-5 bg-secondary bg-opacity-50 bg-gradient rounded-start ">
+                                <h4 className="text-decoration-underline">Demographics</h4>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Population:</span>
+                                    <span className="fw-bold">{data.population.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Male:</span>
+                                    <span className="fw-bold">{data.demographics.male.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Female:</span>
+                                    <span className="fw-bold">{data.demographics.female.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Chidlren:</span>
+                                    <span className="fw-bold">{data.demographics.ageRange.children.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Young:</span>
+                                    <span className="fw-bold">{data.demographics.ageRange.young.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Middle Aged:</span>
+                                    <span className="fw-bold">{data.demographics.ageRange.middleAged.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Old:</span>
+                                    <span className="fw-bold">{data.demographics.ageRange.old.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Grade School Students:</span>
+                                    <span className="fw-bold">{data.demographics.gradeSchoolStudents.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >University Students:</span>
+                                    <span className="fw-bold">{data.demographics.universityStudents.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
                             </ul>
-                            <h3>Demographics</h3>
-                            <ul>
-                                <li>Population: {data.population.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Male: {data.demographics.male.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Female: {data.demographics.female.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Chidlren: {data.demographics.ageRange.children.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Young: {data.demographics.ageRange.young.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Middle Aged: {data.demographics.ageRange.middleAged.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Old: {data.demographics.ageRange.old.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Grade School Students: {data.demographics.gradeSchoolStudents.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>University Students: {data.demographics.universityStudents.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </li>
-                                <li>Working Age: {data.demographics.workingAge.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Employed: {data.demographics.workingReal.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>UnEmployed: {data.demographics.unemployedPop.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Disabled/Terminally Ill: {data.demographics.disabledPop.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Working Class: {data.demographics.profession.workingClass.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Managerial Class: {data.demographics.profession.managerial.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Public Sector: {data.demographics.profession.publicSector.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Teaching: {data.demographics.profession.teaching.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Medicine: {data.demographics.profession.medicine.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>High Tech & Engineering: {data.demographics.profession.highTech.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
-                                <li>Military: {data.demographics.profession.military.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) }</li>
+                            <ul className="col px-5 py-3 fs-5 bg-secondary bg-opacity-50 bg-gradient rounded-end">
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Working Age:</span>
+                                    <span className="fw-bold">{data.demographics.workingAge.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Employed:</span>
+                                    <span className="fw-bold">{data.demographics.workingReal.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >UnEmployed:</span>
+                                    <span className="fw-bold">{data.demographics.unemployedPop.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Disabled/Terminally Ill:</span>
+                                    <span className="fw-bold">{data.demographics.disabledPop.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Working Class:</span>
+                                    <span className="fw-bold">{data.demographics.profession.workingClass.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Managerial Class:</span>
+                                    <span className="fw-bold">{data.demographics.profession.managerial.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Public Sector:</span>
+                                    <span className="fw-bold">{data.demographics.profession.publicSector.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>                                
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Teaching:</span>
+                                    <span className="fw-bold">{data.demographics.profession.teaching.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Medicine:</span>
+                                    <span className="fw-bold">{data.demographics.profession.medicine.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >High Tech & Engineering:</span>
+                                    <span className="fw-bold">{data.demographics.profession.highTech.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
+                                <li className="d-flex justify-content-between" >
+                                    <span className="font-monospace" >Military:</span>
+                                    <span className="fw-bold">{data.demographics.profession.military.toLocaleString( 'en-US', { maximumFractionDigits: 0 }) } </span>
+                                </li>
                             </ul>
-
                         </div>
-                    </>
-                    }
-                </div>
+                    </div>
+                </>
+                }
             </div>
         </>
     )

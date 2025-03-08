@@ -61,8 +61,8 @@ export default function CountryTaxesView(){
 
     return(
         <>
-            <div className="border border-dark border-2 rounded">
-                <h2>Taxes</h2>
+            <div className="border border-dark border-4 rounded mb-5 shadow-lg bg-secondary bg-opacity-75 bg-gradient">
+                <h2 className="display-4 fw-bold font-monospace">Taxes</h2>
             </div>
             <TaxesForm formData={taxesData} onFormChange={onFormChange} formSubmition={formSubmition} />
         </>

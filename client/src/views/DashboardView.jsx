@@ -32,17 +32,17 @@ export default function DashboardView(){
     }, [])
 
     return (
-        <>
+        <div className="d-flex flex-column w-75 mx-auto">
             {
                 countries.map( (elem, index) => (
-                    <button key={index} onClick={ () => navigate("/country/" + elem._id)}> 
-                        <p>{elem.countryName}</p>
-                        <p>{elem.government}</p>
-                        <p>{elem.difficulty}</p>
+                    <button key={index} onClick={ () => navigate("/country/" + elem._id)} className="btn btn-lg btn-dark my-3"> 
+                        <p className="font-monospace fs-4 m-0 text-decoration-underline" >{elem.countryName}</p>
+                        <p className="fs-6 m-0" >Government: {elem.government}</p>
+                        <p className="fs-6 m-0" >Status: {elem.difficulty}</p>
                     </button>
                 ))
             }
             <NavButton btnText={"+ Create A Nation"} navigation={"/newnation"} />
-        </>
+        </div>
     )
 }

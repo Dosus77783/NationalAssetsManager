@@ -33,7 +33,7 @@ export default function RegistrationView(){
 
     return(
         <>
-            <div className="">
+            <div className="w-75 mx-auto p-5 rounded shadow-lg bg-primary bg-opacity-50">
                 <RegForm formData={regFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
             </div>
         </>

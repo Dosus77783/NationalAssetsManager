@@ -104,9 +104,16 @@ async function cycleLogic(cronJobData){
             NAT.treasury.taxRevenue.corpoTax.smallBusiness + NAT.treasury.taxRevenue.corpoTax.largeCorpos + 
             NAT.treasury.taxRevenue.salesTax + NAT.treasury.taxRevenue.socialSecurityTax;
     
+        let SpendingTotal = 0;
+
         for(let spen of Object.keys(NAT.spending)){
-            NAT.spending[spen] =  NAT.treasury.taxRevenue.total * NAT.setProps.spendingStandards[spen];
+            SpendingTotal += NAT.spending[spen];
+        
+            // NAT.spending[spen] =  NAT.treasury.taxRevenue.total * NAT.setProps.spendingStandards[spen];
         }
+
+        NAT.treasury.current += NAT.treasury.taxRevenue.total - SpendingTotal;
+
     
         return await Country.findByIdAndUpdate( NAT._id, NAT, { runValidators: false });
 
