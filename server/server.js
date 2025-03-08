@@ -20,7 +20,7 @@ dotenv.config()
 const PORT = process.env.PORT
 
 dbConnect()
-// restartJobs();
+restartJobs();
 
 app.listen(PORT, () =>{
     console.log(`Simulation Nation Project, Port: ${PORT}`)
