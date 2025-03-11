@@ -3,9 +3,12 @@ import Country from "../models/country.model.js";
 
 const TIMEFRAME = '* * * * *'; // Using Cron job timeframe strings. Currently calls job every minute.
 
+const savedCronJobs = {};
+
 export default function createJobCycle(cronJobData){
 
-    cron.schedule( TIMEFRAME, async () => await cycleLogic(cronJobData), { name: cronJobData.countryName, scheduled: true } );
+    const cJob = cron.schedule( TIMEFRAME, async () => await cycleLogic(cronJobData), { name: cronJobData.countryName, scheduled: true } );
+    savedCronJobs[cronJobData.countryName] = cJob;
 }
 
 export async function restartJobs(){
@@ -15,13 +18,27 @@ export async function restartJobs(){
         console.log(RES);
         if(RES.length === 0){ return; }
         
-        RES.forEach( elem => cron.schedule(TIMEFRAME, async () => await cycleLogic(elem), { name: elem.countryName, scheduled: true } ) );
-        
+        RES.forEach( elem => {
+            const cJob = cron.schedule(TIMEFRAME, async () => await cycleLogic(elem), { name: elem.countryName, scheduled: true } ) 
+            savedCronJobs[elem.countryName] = cJob;
+        });
     }
     catch(error){
         console.log("Restart Jobs Function----", error)
     }
 }
+
+export function stopJob(cName){
+    const cJobId = savedCronJobs[cName];
+    if(cJobId){
+        cJobId.stop()
+        delete savedCronJobs[cName];
+        console.log(cName, "STOPED JOB - REMOVED FROM CRON-JOBS")
+        return;
+    }
+    console.log("CRON-JOB UNABLE TO BE FOUND")
+}
+
 
 async function cycleLogic(cronJobData){
     console.log("Job Report!", "Name:", cronJobData.countryName, cronJobData._id, " -- TimeStamp:", new Date());

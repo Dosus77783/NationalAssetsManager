@@ -49,21 +49,10 @@ export async function updateCountrySpending(id, data){
         .catch( error => {throw error})
 }
 
-// export async function getAllPatients(){
-//     return await PATIENT_INSTANCE.get("/")
-//         .then( res => res.data)
-//         .catch( error => {throw error})
-// }
+// DELETE - REMOVE
 
-
-// export async function editPatientById(id, data){
-//     return await PATIENT_INSTANCE.put(`/${id}`, data)
-//         .then( res => res.data)
-//         .catch( error => {throw error})
-// }
-
-// export async function deletePatientById(id){
-//     return await PATIENT_INSTANCE.delete(`/${id}`)
-//         .then( res => res.data)
-//         .catch( error => {throw error})
-// }
+export async function deleteCountry(id){
+    return await COUNTRY_INSTANCE.delete("/" + id, { withCredentials: true})
+        .then( res => res.data)
+        .catch( error => {throw error})
+}

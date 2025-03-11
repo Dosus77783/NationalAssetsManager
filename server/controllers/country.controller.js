@@ -1,7 +1,7 @@
 import Country from "../models/country.model.js";
 import User from "../models/user.model.js";
 import countryGenerator from "../util/countrygen.js"
-import createJobCycle from "../util/cycleReproduction.js"
+import createJobCycle, { stopJob } from "../util/cycleReproduction.js"
 import jwt from 'jsonwebtoken'
 
 // POST
@@ -179,15 +179,29 @@ export const editCountrySpending = async (req, res, next) => {
 
 // DELETE
 
-// export const deletePatientById = async (req, res, next) => {
-//     try{
-//         const RES = await Patient.findByIdAndDelete( req.params.id );
+export const removeCountryById = async (req, res, next) => {
+    try{
 
-//         if(RES == null){throw null}
-//         res.status(200).json(RES);
-//     }
-//     catch(error){
-//         console.log(error)
-//         next(error)
-//     }
-// }
+        const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
+        console.log("Token----------",decodedToken);
+        console.log("Req.Body ------------", req.body);
+        const userId = decodedToken.payload.userId;
+
+        const COUNTRY = await Country.findById( req.params.id, { userId:1, countryName:1 } );
+        if(COUNTRY.userId != userId){
+            throw res.status(400);
+        }
+
+        const RES = await Country.findByIdAndDelete( req.params.id );
+        await User.findByIdAndUpdate( userId,
+            { $pull: {countries: req.params.id} }
+        )
+        stopJob(COUNTRY.countryName);
+
+        res.status(200).json(COUNTRY);
+    }
+    catch(error){
+        console.log(error)
+        next(error)
+    }
+}

@@ -11,7 +11,7 @@ const CountrySchema = new Schema(
             type: String,
             required: [true, "A Country must have a name."],
             minlength: [2, "A Countries name cannot be more then 2 characters long"],
-            maxlength: [40, "A Countries name cannot be less then 40 characters long"]
+            maxlength: [80, "A Countries name cannot be more then 80 characters long"]
         },
         government:{
             type:String,
