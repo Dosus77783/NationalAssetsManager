@@ -4,8 +4,8 @@ Feature List:
 
 ## Description
 
-A web application which allows you adjust national assets which are simulated and changed through an update function. 
-After creating a user account, you create a nation with certain parameters, including its name, government, and development type. Many aspects are randomized for now, but plans for future will include presets for better testing. As the server runs each nation will update via a specified node-cron task that takes data from 4 sections of user input (Taxes, Spending, Trade and Development) which then simulates the nation changing over the period of 1 day per update. The settings (government, and development type) are incorporated into the node-cron task function to differentiate how the update function handles the changes and build upon your adjustments. These changes include the monetary assets (treasury, tax revenue) of the nation as well as its population, professions, corporations, birth and death rates etc.
+A web app allowing you to create, adjust and further simulate national enttities and their assets by server algorithms through real-time cron jobs. 
+After creating a user account, you create a national entity with certain parameters, including its name, government, and development type. All other aspects are randomized for now, but plans for the future include presets for better testing. As the server runs each national entity will update via a specified node-cron task that takes data from 4 sections of user input (Taxes, Spending, Trade and Development) which then simulates the assets changing over the period of 1 day per update. The settings (government, and development type) are incorporated into the node-cron task function to differentiate how the update function handles the changes and build upon your adjustments. These changes include the monetary assets (treasury, tax revenue) of the nation as well as its population, professions, corporations, birth and death rates etc.
 
 ## Stack Information
 
