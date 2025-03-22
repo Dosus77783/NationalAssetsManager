@@ -9,7 +9,7 @@ After creating a user account, you create a nation with certain parameters, incl
 
 ## Stack Information
 
-- MERN:
+### MERN:
 - Javascript using Node.js (Soon to be reformated to TypeScript)
 - React.js (Front-End)
 - Express.js (Back-End Server)
