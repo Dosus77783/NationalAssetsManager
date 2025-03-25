@@ -1,6 +1,5 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import { NavigationBar } from './components/NavigationBar'
 import HomePageView from './views/HomePageView'
 import RegistrationView from './views/RegistrationView'
 import DashboardView from './views/DashboardView'
@@ -13,7 +12,7 @@ import Layout from './components/Layout'
 function App() {
 
   return (
-    <>
+    <div className="w-4/6 m-auto">
       <Routes>
         <Route element={ <Layout /> } >
           <Route path="/" element={<HomePageView />} />
@@ -25,7 +24,7 @@ function App() {
           <Route path="/country/settings/spending/:id" element={<CountrySpendingView />} />
         </Route>
       </Routes>
-    </>
+    </div>
   )
 }
 

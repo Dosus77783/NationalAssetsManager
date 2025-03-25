@@ -39,9 +39,9 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div className="d-flex justify-content-center border border-dark border-5 rounded-pill p-3 mb-5 bg-danger shadow" >
+    <div className="p-3 mb-5 bg-clip-text text-transparent bg-linear-to-t from-cyan-800 to-blue-400 " >
         { navSettings.showBackBtn && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } /> }
-        <h1 className="fw-bold mx-5" style={ {fontSize:"4em"} } >Simulation Nation</h1>
+        <h1 className="mx-5 " >National Assets Manager</h1>
         { navSettings.showLogoutBtn && <LogoutButton /> }
     </div>
     )
