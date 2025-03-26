@@ -39,10 +39,10 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div className="p-3 mb-5 bg-clip-text text-transparent bg-linear-to-t from-cyan-800 to-blue-400 " >
-        { navSettings.showBackBtn && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } /> }
-        <h1 className="mx-5 " >National Assets Manager</h1>
-        { navSettings.showLogoutBtn && <LogoutButton /> }
+    <div className="flex flex-wrap px-5 py-2 col-span-5 bg-blue-100 rounded-xs border-4 border-blue-50 border-double drop-shadow-md" >
+        { /* navSettings.showBackBtn  && */ <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="mx-auto grow-1 w-18" /> }
+        <h1 className="grow-4 text-center py-4 text-5xl font-bold bg-clip-text text-transparent bg-linear-to-b from-blue-300 to-sky-900" >NATIONAL ASSETS MANAGER</h1>
+        { /* navSettings.showLogoutBtn && */ <LogoutButton /> }
     </div>
     )
 }

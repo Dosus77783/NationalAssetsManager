@@ -18,7 +18,7 @@ export default function LogoutButton(){
 
     return(
         <>
-            <button type="button" onClick={ () => onLogOut() } className="btn btn-lg btn-primary shadow-sm my-auto px-3" >Logout</button>
+            <button type="button" onClick={ () => onLogOut() } className="grow-1 w-18 m-auto shadow-lg text-lg bg-red-700 hover:bg-red-600 text-white rounded-xs" >Logout</button>
         </>
     )
 }

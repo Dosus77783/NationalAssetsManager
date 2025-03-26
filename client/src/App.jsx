@@ -12,7 +12,7 @@ import Layout from './components/Layout'
 function App() {
 
   return (
-    <div className="w-4/6 m-auto">
+    <>
       <Routes>
         <Route element={ <Layout /> } >
           <Route path="/" element={<HomePageView />} />
@@ -24,7 +24,7 @@ function App() {
           <Route path="/country/settings/spending/:id" element={<CountrySpendingView />} />
         </Route>
       </Routes>
-    </div>
+    </>
   )
 }
 
