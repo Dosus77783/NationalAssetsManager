@@ -53,14 +53,14 @@ export default function HomePageView(){
 
     return(
         <>
-            <div className="col-start-2 col-span-3">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 justify-items-center py-5 px-7 my-5 bg-radial from-blue-400/90 to-blue-500/80 border-2 border-blue-300 focus-within:outline-8 outline-blue-300 rounded shadow-xl col-start-2 col-span-3">
                 <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
-                <p className="fs-5 fw-bold d-flex flex-column my-auto">
+                <p className="w-25 self-center text-center font-bold text-lg">
                     Don't have a login?
-                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="" />
+                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="w-full py-1 font-normal" />
                 </p>
             </div>
-            <img src="./src/assets/globe.png" alt="earth globe" className="col-start-2 col-span-3"/>
+            <img src="./src/assets/globe.png" alt="earth globe" className="rounded-[49%] mx-auto border-3 col-start-2 col-span-3"/>
         </>
     )
 }
