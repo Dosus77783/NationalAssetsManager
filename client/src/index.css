@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {    
+    --color-darkmodebg: #222527;
+}
+
+html[mode="light"] #background{
+    @apply invert transition duration-500;
+}
+html[mode="dark"] #background{
+    @apply transition duration-500;
+}
+
+html[mode="light"] #homepage{
+    @apply bg-radial from-white to-gray-100;
+}
+
+
+
 button{
     cursor: pointer;
 }

@@ -1,0 +1,20 @@
+html[mode="dark"]{
+    color:#cbcccd
+}
+
+html[mode="dark"] #navbar{
+    color: #a4a6a8;
+    border-color: #66686b;
+}
+
+html[mode="dark"] #homepage{
+    background-color: #151b20;
+    border-color: #32414d;
+    border-width: 1px;
+}
+
+html[mode="dark"] input{
+    background-color: #11121a;
+    border-color: #32414d;
+    
+}

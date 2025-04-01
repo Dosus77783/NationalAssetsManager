@@ -39,9 +39,9 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div className="flex flex-wrap justify-evenly items-center px-5 py-2 col-span-5 bg-blue-100 rounded-xs border-4 border-blue-50 border-double drop-shadow-md" >
-        <div className="w-20 ">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20" /> }</div>
-        <h1 className="text-center py-4 text-5xl font-bold bg-clip-text text-transparent bg-linear-to-b from-blue-300 to-sky-900" >NATIONAL ASSETS MANAGER</h1>
+    <div id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-5 backdrop-blur-sm rounded-xs border-2 border-blue-50 border-double drop-shadow-md" >
+        <div className="w-20">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20" /> }</div>
+        <h1 className="text-center text-5xl font-bold font-sans tracking-widest" >NATIONAL ASSETS MANAGER</h1>
         <div className="w-20">{ navSettings.showLogoutBtn  && <LogoutButton /> }</div>
     </div>
     )

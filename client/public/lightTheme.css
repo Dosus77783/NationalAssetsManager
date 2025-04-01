@@ -1,0 +1,9 @@
+html[mode="light"]{
+    color: black;
+}
+
+
+html[mode="light"] #navbar{
+    border-color: #eff6ff;
+}
+
