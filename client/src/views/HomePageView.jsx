@@ -53,11 +53,11 @@ export default function HomePageView(){
 
     return(
         <>
-            <div id="homepage" className="grid grid-cols-1 justify-items-center py-5 px-7 my-5 rounded-3xl drop-shadow-xl col-start-2 col-span-3">
+            <div id="homepage" className="py-5 px-20 my-5 rounded-3xl drop-shadow-xl col-start-3 col-span-2">
                 <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
-                <p className="w-25 self-center text-center font-bold text-lg">
-                    Don't have a login?
-                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="w-full py-1 font-normal" />
+                <p className="grid grid-cols-3 text-lg my-10 items-center border-slate-800">
+                    <span className="col-span-2" >Don't have a login?</span>
+                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="col-start-3 py-1 w-30 tracking-wide font-bold text-xl bg-registerbtn transition-colors hover:bg-slate-800 border border-slate-700 " />
                 </p>
             </div>
         </>

@@ -39,9 +39,9 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-5 backdrop-blur-sm rounded-xs border-2 border-blue-50 border-double drop-shadow-md" >
+    <div id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-full" >
         <div className="w-20">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20" /> }</div>
-        <h1 className="text-center text-5xl font-bold font-sans tracking-widest" >NATIONAL ASSETS MANAGER</h1>
+        <h1 id="namheading" className="text-center text-5xl font-bold font-sans tracking-widest" >NATIONAL ASSETS MANAGER</h1>
         <div className="w-20">{ navSettings.showLogoutBtn  && <LogoutButton /> }</div>
     </div>
     )

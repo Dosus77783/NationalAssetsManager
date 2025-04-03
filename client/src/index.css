@@ -3,7 +3,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {    
-    --color-darkmodebg: #222527;
+    --color-loginbtn: #1a3163;
+    --color-registerbtn: #12161d;
 }
 
 html[mode="light"] #background{
@@ -17,8 +18,10 @@ html[mode="light"] #homepage{
     @apply bg-radial from-white to-gray-100;
 }
 
-
-
 button{
     cursor: pointer;
+}
+
+#namheading{
+    text-shadow: 5px 3px 10px grey;
 }

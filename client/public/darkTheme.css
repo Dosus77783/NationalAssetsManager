@@ -4,7 +4,6 @@ html[mode="dark"]{
 
 html[mode="dark"] #navbar{
     color: #a4a6a8;
-    border-color: #66686b;
 }
 
 html[mode="dark"] #homepage{
@@ -16,5 +15,8 @@ html[mode="dark"] #homepage{
 html[mode="dark"] input{
     background-color: #11121a;
     border-color: #32414d;
-    
+}
+
+html[mode="dark"] #loginbtn{
+    background-color: #1a3163;
 }

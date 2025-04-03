@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="relative min-h-screen">
       <div id="background" className="bg-[url(/src/assets/globebg.png)] fixed top-0 left-0 w-full h-full bg-cover bg-center" />
-      <div className="w-10/12 m-auto grid grid-cols-5 relative z-10">
+      <div className="w-10/12 m-auto grid grid-cols-6 relative z-10">
         <Routes>
           <Route element={ <Layout /> } >
             <Route path="/" element={<HomePageView />} />
