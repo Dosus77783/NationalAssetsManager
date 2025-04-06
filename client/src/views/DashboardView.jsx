@@ -14,14 +14,14 @@ export default function DashboardView(){
     useEffect( () => {
         if(Object.keys(user).length === 0 ){
             autoLogin()
-            .then( (res) => {
-                setUser(res)
-                return;
-            } )
-            .catch( (err) => { 
-                console.log(err)
-                navigate("/") 
-            })
+                .then( (res) => {
+                    setUser(res)
+                    return;
+                } )
+                .catch( (err) => { 
+                    console.log(err)
+                    navigate("/") 
+                })
         }
 
 
@@ -32,17 +32,19 @@ export default function DashboardView(){
     }, [])
 
     return (
-        <div className="d-flex flex-column w-75 mx-auto">
+        <>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 justify-items-center col-start-2 col-span-4 my-10">
             {
                 countries.map( (elem, index) => (
-                    <button key={index} onClick={ () => navigate("/country/" + elem._id)} className="btn btn-lg btn-dark my-3"> 
-                        <p className="font-monospace fs-4 m-0 text-decoration-underline" >{elem.countryName}</p>
-                        <p className="fs-6 m-0" >Government: {elem.government}</p>
-                        <p className="fs-6 m-0" >Status: {elem.difficulty}</p>
+                    <button key={index} onClick={ () => navigate("/country/" + elem._id)} className="dashboard overflow-auto w-full h-40 grid grid-cols-1 justify-items-start content-start text-start px-5 pt-3 shadow-lg active:scale-95 rounded-lg "> 
+                        <p className="m-0 mb-1 text-xl  font-bold tracking-widest" >{elem.countryName}</p>
+                        <p className="my-1 dashcountries" > Government: {elem.government}</p>
+                        <p className="my-1 dashcountries" > Status: {elem.difficulty}</p>
                     </button>
                 ))
             }
-            <NavButton btnText={"+ Create A Nation"} navigation={"/newnation"} />
         </div>
+        <NavButton btnText={"+ Create A Nation"} navigation={"/newnation"} styleAdditons="absolute bottom-0 justify-self-center w-60 tracking-wide font-bold text-xl" />
+        </>
     )
 }

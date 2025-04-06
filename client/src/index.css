@@ -4,7 +4,11 @@
 
 @theme {    
     --color-loginbtn: #1a3163;
-    --color-registerbtn: #12161d;
+    --color-btnblack: #12161d;
+}
+
+html[mode="light"] #homepage, html[mode="light"] #registrationview, html[mode="light"] #nationformview{
+    @apply bg-radial from-white to-gray-100;
 }
 
 html[mode="light"] #background{
@@ -14,8 +18,18 @@ html[mode="dark"] #background{
     @apply transition duration-500;
 }
 
-html[mode="light"] #homepage{
-    @apply bg-radial from-white to-gray-100;
+html[mode="light"] .dashboard{
+    @apply bg-neutral-50 transition-colors hover:bg-gray-200 ;
+}
+html[mode="dark"] .dashboard{
+    @apply bg-btnblack transition-colors hover:bg-slate-700 border border-slate-700 ;
+}
+
+html[mode="light"] .dashcountries{
+    @apply px-1 py-0.5 text-sm rounded-sm bg-slate-300 ;
+}
+html[mode="dark"] .dashcountries{
+    @apply px-1 py-0.5 text-sm rounded-sm bg-slate-600;
 }
 
 button{
@@ -23,5 +37,5 @@ button{
 }
 
 #namheading{
-    text-shadow: 5px 3px 10px grey;
+    text-shadow: 5px 2px 5px rgba(0, 0, 0, 0.507);
 }
