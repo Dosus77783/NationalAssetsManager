@@ -5,31 +5,70 @@
 @theme {    
     --color-loginbtn: #1a3163;
     --color-btnblack: #12161d;
+    --color-darkmodebg: #151b20;
+    --color-darkmodeborder: #32414d;
 }
 
-html[mode="light"] #homepage, html[mode="light"] #registrationview, html[mode="light"] #nationformview{
-    @apply bg-radial from-white to-gray-100;
+html[mode="dark"]{ 
+    
+    #background{
+        @apply transition duration-500;
+    }
+    .dashboard{
+        @apply bg-btnblack transition-colors hover:bg-slate-700 border border-slate-700;
+    }
+    .dashcountries{
+        @apply px-1 py-0.5 text-sm rounded-sm bg-slate-600;
+    }
+    .background-extra-fill{
+        @apply bg-btnblack border-darkmodeborder
+    }
+    #homepage, #registrationview, #nationformview, #nationnavbar, #nationstatsmain{
+        @apply bg-darkmodebg border-darkmodeborder border;
+    }
+    #nationstatsmain{
+        @apply bg-darkmodebg/50 backdrop-blur-xs;
+    }
+    .statscard{
+        @apply bg-darkmodebg border border-darkmodeborder rounded-xl shadow
+    }
+    .income-red{
+        @apply bg-rose-800
+    }
+    .income-green{
+        @apply bg-green-700
+    }
 }
 
-html[mode="light"] #background{
-    @apply invert transition duration-500;
-}
-html[mode="dark"] #background{
-    @apply transition duration-500;
-}
+html[mode="light"]{ 
 
-html[mode="light"] .dashboard{
-    @apply bg-neutral-50 transition-colors hover:bg-gray-200 ;
-}
-html[mode="dark"] .dashboard{
-    @apply bg-btnblack transition-colors hover:bg-slate-700 border border-slate-700 ;
-}
-
-html[mode="light"] .dashcountries{
-    @apply px-1 py-0.5 text-sm rounded-sm bg-slate-300 ;
-}
-html[mode="dark"] .dashcountries{
-    @apply px-1 py-0.5 text-sm rounded-sm bg-slate-600;
+    #background{
+        @apply invert transition duration-500;
+    }
+    #homepage, #registrationview, #nationformview, #nationnavbar{
+        @apply bg-radial from-white to-gray-100;
+    }
+    .dashboard{
+        @apply bg-neutral-50 transition-colors hover:bg-gray-200 border-0 ;
+    }
+    .dashcountries{
+        @apply px-1 py-0.5 text-sm rounded-sm bg-slate-300 ;
+    }
+    .background-extra-fill{
+        @apply bg-slate-400/20
+    }
+    #nationstatsmain{
+        @apply bg-neutral-50/40
+    }
+    .statscard{
+        @apply bg-neutral-50 rounded-xl shadow
+    }
+    .income-red{
+        @apply bg-rose-600
+    }
+    .income-green{
+        @apply bg-green-500
+    }
 }
 
 button{

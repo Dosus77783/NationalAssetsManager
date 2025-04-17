@@ -6,14 +6,14 @@ html[mode="dark"] #navbar{
     color: #a4a6a8;
 }
 
-html[mode="dark"] #homepage, html[mode="dark"] #registrationview, html[mode="dark"] #nationformview{
-    background-color: #151b20;
-    border-color: #32414d;
-    border-width: 1px;
+html[mode="dark"]{
+
 }
 
-html[mode="dark"] input, html[mode="dark"] select{
+html[mode="dark"]{ 
+    input, select{
     background-color: #11121a;
     border-color: #32414d;
+    }
 }
 

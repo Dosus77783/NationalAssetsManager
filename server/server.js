@@ -23,5 +23,5 @@ dbConnect()
 restartJobs();
 
 app.listen(PORT, () =>{
-    console.log(`Simulation Nation Project, Port: ${PORT}`)
+    console.log(`National Assets Manager, Port: ${PORT}`)
 })

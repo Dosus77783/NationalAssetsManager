@@ -5,6 +5,7 @@ import { deleteCountry, getUserCountryById } from "../services/countryServices";
 import { autoLogin } from "../services/userServices";
 import NationNavBar from "../components/NationNavBar";
 import NationStats from "../components/NationStats";
+import DeleteCountryButton from "../components/DeleteCountryButton";
 
 export default function CountryView(){
     const navigate = useNavigate();
@@ -31,20 +32,11 @@ export default function CountryView(){
 
     }, [])
 
-    const deleteNation = ()=>{
-        deleteCountry(id)
-            .then( res => {
-                console.log(res)
-                navigate("/dashboard")
-            })
-            .catch( err => console.log("Inside deleteNation CATCH ---------", err ))
-    }
-
     return(
         <>
             <NationNavBar />
             <NationStats data={ countryData } />
-            <button className="btn btn-danger btn my-4 shadow" onClick={ () => deleteNation() } >Delete</button>
+            <DeleteCountryButton id={id} style={"col-start-5 justify-self-end my-5 w-30 text-lg "} />
         </>
     )
 }

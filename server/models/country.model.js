@@ -15,7 +15,7 @@ const CountrySchema = new Schema(
         },
         government:{
             type:String,
-            enum:["Democracy", "Republic", "Monarchy", "Theocracy", "Fascist", "Communist"],
+            enum:["Democracy", "Republic", "Monarchy", "Theocracy", "Dictatorship"],
             required: [true, "A government type must be chosen."]
         },
         difficulty:{

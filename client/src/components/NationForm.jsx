@@ -20,8 +20,7 @@ export default function NationForm( {formData, onFormChange, formSubmition} ){
                         <option value="Republic" >Republic</option>
                         <option value="Monarchy" >Monarchy</option>
                         <option value="Theocracy" >Theocracy</option>
-                        <option value="Fascist" >Fascist</option>
-                        <option value="Communist" >Communist</option>
+                        <option value="Dictatorship" >Dictatorship</option>
                     </select>
 
                     <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.difficulty}</p>} </div>

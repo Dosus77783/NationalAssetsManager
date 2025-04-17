@@ -5,7 +5,7 @@ export default function NavButton( { btnText, navigation, styleAdditons = "" } )
 
     return(
         <>
-            <button id="navigationbtn" type="button" onClick={ () => navigate(navigation)} className={"shadow-lg active:scale-95 rounded bg-btnblack transition-colors hover:bg-slate-700 border border-slate-700 " + styleAdditons} >{btnText}</button>
+            <button type="button" onClick={ () => navigate(navigation)} className={"shadow-lg active:scale-95 rounded bg-btnblack transition-colors hover:bg-slate-700 border border-slate-700 " + styleAdditons} >{btnText}</button>
         </>
     )
 }

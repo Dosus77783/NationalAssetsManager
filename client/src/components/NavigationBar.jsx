@@ -41,10 +41,10 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-full" >
-        <div className="w-20 lg:m-0 md:mb-3 mb-3">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20" /> }</div>
+    <header id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-full" >
+        <div className="w-20 lg:m-0 md:mb-3 mb-3">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20 text-white" /> }</div>
         <p id="namheading" className="text-center text-5xl font-bold font-sans tracking-widest" >NATIONAL ASSETS MANAGER</p>
         <div className="w-20 lg:m-0 md:mt-4 mt-4">{ navSettings.showLogoutBtn  && <LogoutButton /> }</div>
-    </div>
+    </header>
     )
 }
