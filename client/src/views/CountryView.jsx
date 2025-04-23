@@ -1,7 +1,8 @@
 import { useEffect, useContext, useState } from "react";
 import { userContext } from "../context/userContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { deleteCountry, getUserCountryById } from "../services/countryServices";
+import { io } from "socket.io-client"
+import { getUserCountryById } from "../services/countryServices";
 import { autoLogin } from "../services/userServices";
 import NationNavBar from "../components/NationNavBar";
 import NationStats from "../components/NationStats";
@@ -12,6 +13,7 @@ export default function CountryView(){
     const {user, setUser} = useContext(userContext);
     const [ countryData, setCountryData ] = useState( null );
     const { id } = useParams();
+    const socket = io("")
 
     useEffect( ()=>{
         if(Object.keys(user).length === 0 ){
@@ -29,7 +31,6 @@ export default function CountryView(){
         getUserCountryById(id)
             .then( (res) => setCountryData(res) )
             .catch( (err) => console.log(err) )
-
     }, [])
 
     return(

@@ -23,20 +23,26 @@ html[mode="dark"]{
     .background-extra-fill{
         @apply bg-btnblack border-darkmodeborder
     }
-    #homepage, #registrationview, #nationformview, #nationnavbar, #nationstatsmain{
+    #homepage, #registrationview, #nationformview, #nationnavbar, #nationstatsmain, #nation-heading{
         @apply bg-darkmodebg border-darkmodeborder border;
     }
     #nationstatsmain{
         @apply bg-darkmodebg/50 backdrop-blur-xs;
     }
     .statscard{
-        @apply bg-darkmodebg border border-darkmodeborder rounded-xl shadow
+        @apply bg-darkmodebg border border-darkmodeborder rounded-xl
     }
     .income-red{
         @apply bg-rose-800
     }
     .income-green{
         @apply bg-green-700
+    }
+    .government-icons{
+        @apply fill-slate-400
+    }
+    .sub-cards{
+        @apply bg-slate-700
     }
 }
 
@@ -45,7 +51,7 @@ html[mode="light"]{
     #background{
         @apply invert transition duration-500;
     }
-    #homepage, #registrationview, #nationformview, #nationnavbar{
+    #homepage, #registrationview, #nationformview, #nationnavbar, #nation-heading{
         @apply bg-radial from-white to-gray-100;
     }
     .dashboard{
@@ -58,16 +64,22 @@ html[mode="light"]{
         @apply bg-slate-400/20
     }
     #nationstatsmain{
-        @apply bg-neutral-50/40
+        @apply bg-neutral-50/20
     }
     .statscard{
-        @apply bg-neutral-50 rounded-xl shadow
+        @apply bg-neutral-50 rounded-xl shadow-lg
     }
     .income-red{
         @apply bg-rose-600
     }
     .income-green{
         @apply bg-green-500
+    }
+    .government-icons{
+        @apply fill-btnblack
+    }
+    .sub-cards{
+        @apply bg-blue-200/30
     }
 }
 
