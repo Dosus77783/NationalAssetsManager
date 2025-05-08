@@ -1,5 +1,6 @@
 import cron from "node-cron"
 import Country from "../models/country.model.js";
+import socketio from "../server.js";
 
 const TIMEFRAME = '* * * * *'; // Using Cron job timeframe strings. Currently calls job every minute.
 
@@ -42,7 +43,7 @@ export function stopJob(cName){
 
 async function cycleLogic(cronJobData){
     console.log("Job Report!", "Name:", cronJobData.countryName, cronJobData._id, " -- TimeStamp:", new Date());
-
+    
     try{
         // CONSTANTS FOR LOGIC
         const NAT = await Country.findById( cronJobData._id );
@@ -131,11 +132,12 @@ async function cycleLogic(cronJobData){
 
         NAT.treasury.current += NAT.treasury.taxRevenue.total - SpendingTotal;
 
-    
+        setTimeout( () => socketio.emit("country-cronjob:" + cronJobData._id), 500);
         return await Country.findByIdAndUpdate( NAT._id, NAT, { runValidators: false });
 
     }
     catch(error){
         console.log("Cycle Logic Function----", cronJobData.countryName, error)
     }
+    
 }

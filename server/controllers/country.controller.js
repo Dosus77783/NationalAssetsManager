@@ -9,8 +9,8 @@ import jwt from 'jsonwebtoken'
 export const createCountry = async (req, res, next) =>{
     try{
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
         let cResult = { ...req.body, userId };
         cResult = await Country.create(cResult);
@@ -33,8 +33,8 @@ export const createCountry = async (req, res, next) =>{
 export const getOneUserCountryComplex = async (req, res, next) =>{
     try{
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id );
@@ -53,12 +53,12 @@ export const getOneUserCountryComplex = async (req, res, next) =>{
 export const getUserCountriesBasic = async (req, res, next) =>{
     try{
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const USER_WITH_COUNTRIES_BASIC = await User.findById(userId).populate( {path:'countries', select:'countryName government difficulty'} );
-        console.log(USER_WITH_COUNTRIES_BASIC);
+        // console.log(USER_WITH_COUNTRIES_BASIC);
         res.status(200).json(USER_WITH_COUNTRIES_BASIC);
     }
     catch(error){
@@ -70,8 +70,8 @@ export const getUserCountriesBasic = async (req, res, next) =>{
 export const getUserCountryTaxes = async (req, res, next) =>{
     try{
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id, 'taxes userId' );
@@ -91,12 +91,12 @@ export const getUserCountryTaxes = async (req, res, next) =>{
 export const getUserCountrySpending = async (req, res, next) =>{
     try{
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------SpendingGET",decodedToken);
-        console.log("Req.Body ------------SpendingGET");
+        // console.log("Token----------SpendingGET",decodedToken);
+        // console.log("Req.Body ------------SpendingGET");
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id, { 'treasury.taxRevenue.total': 1, spending:1, userId:1} );
-        console.log(COUNTRY)
+        // console.log(COUNTRY)
         if(COUNTRY.userId != userId){
             throw res.status(400);
         }
@@ -113,7 +113,7 @@ export const getUserCountrySpending = async (req, res, next) =>{
 export const getAllCountriesAndUsers = async (req, res, next) =>{
     try{
         const RES = await Country.find().populate('userId');
-        console.log(RES);
+        // console.log(RES);
         res.status(200).json(RES);
     }
     catch(error){
@@ -129,8 +129,8 @@ export const editCountryTaxes = async (req, res, next) => {
     try{
 
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id, 'userId' );
@@ -155,8 +155,8 @@ export const editCountrySpending = async (req, res, next) => {
     try{
 
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id, 'userId' );
@@ -183,8 +183,8 @@ export const removeCountryById = async (req, res, next) => {
     try{
 
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const COUNTRY = await Country.findById( req.params.id, { userId:1, countryName:1 } );

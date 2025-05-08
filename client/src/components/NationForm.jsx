@@ -3,37 +3,36 @@ export default function NationForm( {formData, onFormChange, formSubmition} ){
 
     return (
         <>  
-            <div className="mx-auto fw-bold">
-                {formData.valMsgs.name && <p id="valType" className="text-center text-danger font-monospace" >{formData.valMsgs.name} - Status: {formData.valMsgs.statusCode}</p>}
-                <h1 className="display-5 fw-bold mb-5" >New Nation</h1>
+            <div className="pb-7">
+                {formData.valMsgs.name && <p id="valType" className="font-sans font-bold tracking-widest text-center text-xl text-rose-500" >{formData.valMsgs.name} - Status: {formData.valMsgs.statusCode}</p>}
+                <h1 className="text-3xl text-center font-bold my-3" >New Nation</h1>
 
-                <form onSubmit={ formSubmition } className="">
+                <form onSubmit={ formSubmition } className="grid grid-cols-1 gap-2 text-lg">
+                    <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.countryName}</p>} </div>
                     <label htmlFor="countryNameForm" className="form-label fs-4">Country Name:</label>
-                    {formData.valMsgs.name && <p className="text-center text-danger font-monospace">{formData.valMsgs.validationErrors.countryName}</p>}
-                    <input name="countryName" type="text" className="form-control mb-4" id="countryNameForm" onChange={ onFormChange } value={formData.countryName} />
+                    <input name="countryName" type="text" className="border rounded-sm ps-2 input-text" id="countryNameForm" onChange={ onFormChange } value={formData.countryName} />
 
-                    <label htmlFor="govSelectForm" className="form-label fs-4">Government Type:</label>
-                    {formData.valMsgs.name && <p className="text-center text-danger font-monospace">{formData.valMsgs.validationErrors.government}</p>}
-                    <select name="government" className="form-select mb-4" id="govSelectForm" onChange={ onFormChange } value={formData.government} >
+                    <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.government}</p>} </div>
+                    <label htmlFor="govSelectForm" className="">Government Type:</label>
+                    <select name="government" className="border rounded-sm ps-2" id="govSelectForm" onChange={ onFormChange } value={formData.government} >
                         <option value="">Choose...</option>
                         <option value="Democracy" >Democracy</option>
                         <option value="Republic" >Republic</option>
                         <option value="Monarchy" >Monarchy</option>
                         <option value="Theocracy" >Theocracy</option>
-                        <option value="Fascist" >Fascist</option>
-                        <option value="Communist" >Communist</option>
+                        <option value="Dictatorship" >Dictatorship</option>
                     </select>
 
-                    <label htmlFor="diffSelectForm" className="form-label fs-4">Difficulty:</label>
-                    {formData.valMsgs.name && <p className="text-center text-danger font-monospace">{formData.valMsgs.validationErrors.difficulty}</p>}
-                    <select name="difficulty" className="form-select mb-4" id="diffSelectForm" onChange={ onFormChange } value={formData.difficulty} >
+                    <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.difficulty}</p>} </div>
+                    <label htmlFor="diffSelectForm" className="">Difficulty:</label>
+                    <select name="difficulty" className="border rounded-sm ps-2" id="diffSelectForm" onChange={ onFormChange } value={formData.difficulty} >
                         <option value="Random">Random</option>
                         <option value="Developing" >Developing</option>
                         <option value="Industrial" >Industrial</option>
                         <option value="Modern" >Modern</option>
                     </select>
 
-                    <button id="formBtn" type="submit" className="btn btn-lg btn-dark shadow" >Create</button>
+                    <button id="formBtn" type="submit" className="p-2 mt-10 shadow-lg text-xl active:scale-95 transition-colors bg-loginbtn hover:bg-blue-900 border border-blue-950 text-white/90 tracking-widest rounded" >Create</button>
                 </form>
             </div>
         </>

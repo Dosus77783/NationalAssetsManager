@@ -1,0 +1,19 @@
+html[mode="dark"]{
+    color:#cbcccd
+}
+
+html[mode="dark"] #navbar{
+    color: #a4a6a8;
+}
+
+html[mode="dark"]{
+
+}
+
+html[mode="dark"]{ 
+    .input-text, select{
+    background-color: #11121a;
+    border-color: #32414d;
+    }
+}
+

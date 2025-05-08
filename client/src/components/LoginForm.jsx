@@ -3,25 +3,25 @@ export default function LoginForm( {formData, onFormChange, formSubmition} ){
 
     return (
         <>  
-            <div className="py-3 text-start fw-bold fs-5">
-                {formData.valMsgs.name && <p id="valType" className="text-center text-danger font-monospace">{formData.valMsgs.name} - Status: {formData.valMsgs.statusCode}</p>}
-                Login:
-                <form onSubmit={ formSubmition } className="d-flex p-3 border border-dark rounded border-3 bg-secondary bg-opacity-50 bg-gradient ">
-                    <div className="d-flex flex-column justify-content-between">
-                        {formData.valMsgs.name && <p className="text-danger font-monospace">{formData.valMsgs.validationErrors.email}</p>}
-                        <div className="d-flex">
-                            <label htmlFor="loginEmail1" className="form-label me-2 ">Email:</label>
-                            <input name="email" type="email" className="form-control me-2 " id="loginEmail1" onChange={ onFormChange } value={formData.email} />
+            <div className="text-lg">
+                <div className="h-7" >{formData.valMsgs.name && <p id="valType" className="font-sans font-bold tracking-widest text-center text-xl text-rose-500">{formData.valMsgs.name} - Status: {formData.valMsgs.statusCode}</p>} </div>
+                <p className="text-3xl text-center font-bold ">Login</p>
+                <form onSubmit={ formSubmition } className="grid grid-cols-1 gap-2">
+                    <div className="">
+                        <div className="h-7">{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500 ">{formData.valMsgs.validationErrors.email}</p>} </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="loginEmail1" className="">Email:</label>
+                            <input name="email" type="email" className="border rounded-sm ps-2 input-text" id="loginEmail1" onChange={ onFormChange } value={formData.email} />
                         </div>
                     </div>
-                    <div className="d-flex flex-column justify-content-between">
-                        {formData.valMsgs.name && <p className="text-danger font-monospace">{formData.valMsgs.validationErrors.password}</p>}
-                        <div className="d-flex">
-                            <label htmlFor="loginPassword1" className="form-label me-2 d-inline">Password:</label>
-                            <input name="password" type="password" className="form-control me-5 d-inline" id="loginPassword1" onChange={ onFormChange } value={formData.password} />
+                    <div className="">
+                        <div className="h-7">{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500 ">{formData.valMsgs.validationErrors.password}</p>} </div>
+                        <div className="flex flex-col">
+                            <label htmlFor="loginPassword1" className="">Password:</label>
+                            <input name="password" type="password" className="border rounded-sm ps-2 input-text" id="loginPassword1" onChange={ onFormChange } value={formData.password} />
                         </div>
                     </div>
-                    <button id="formBtn" type="submit" className="btn btn-success my-auto shadow-sm">Login</button>
+                    <button id="formBtnLogin" type="submit" className="p-2 mt-5 shadow-lg text-xl active:scale-95 transition-colors bg-loginbtn hover:bg-blue-900 border border-blue-950 text-white/90 tracking-widest rounded">Login</button>
                 </form>
             </div>
         </>

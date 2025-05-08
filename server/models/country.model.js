@@ -15,7 +15,7 @@ const CountrySchema = new Schema(
         },
         government:{
             type:String,
-            enum:["Democracy", "Republic", "Monarchy", "Theocracy", "Fascist", "Communist"],
+            enum:["Democracy", "Republic", "Monarchy", "Theocracy", "Dictatorship"],
             required: [true, "A government type must be chosen."]
         },
         difficulty:{
@@ -62,7 +62,7 @@ const CountrySchema = new Schema(
             daily:{type:Number, default:0},
             cbr:{type:Number, default:0}, // crude birth rate
             totalYearly:{type:Number, default:0}, //daily multiplied by 365
-            spendingDiff:{type:Number, default:0} // a decimal which changes daily based on spending & populatiopn, will then be used to change daily birth/deaths. Negative means birthRates are lowering.
+            spendingDiff:{type:Number, default:0} // a decimal which changes daily based on spending & population, will then be used to change daily birth/deaths. Negative means birthRates are lowering.
         },
         deathRate:{
             daily:{type:Number, default:0},

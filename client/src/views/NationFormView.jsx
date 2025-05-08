@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { userContext } from "../context/userContext";
 import { createCountryService } from '../services/countryServices.js'
+import { autoLogin } from "../services/userServices.js";
 
 export default function NationFormView(){
     const {user, setUser} = useContext(userContext);
@@ -10,7 +11,15 @@ export default function NationFormView(){
 
     useEffect( () => {
         if(Object.keys(user).length === 0 ){
-            navigate("/") 
+            autoLogin()
+                .then( (res) => {
+                    setUser(res)
+                    return;
+                } )
+                .catch( (err) => { 
+                    console.log(err)
+                    navigate("/") 
+                }) 
         }
     }, [])
 
@@ -40,7 +49,7 @@ export default function NationFormView(){
     }
 
     return(
-        <div className="w-75 mx-auto p-5 rounded shadow-lg bg-primary bg-opacity-50">
+        <div id="nationformview" className="rounded-3xl drop-shadow-xl lg:px-15 md:px-10 px-5 py-5 my-5 lg:col-start-3 lg:col-span-2 md:col-start-2 md:col-span-4 col-start-2 col-span-4">
             <NationForm formData={ nationData } onFormChange={ onFormChange } formSubmition={ formSubmition } />
         </div>
     )

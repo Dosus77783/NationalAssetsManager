@@ -53,14 +53,13 @@ export default function HomePageView(){
 
     return(
         <>
-            <div className="border border-dark rounded border-3 d-flex justify-content-evenly bg-primary bg-opacity-50 shadow">
+            <div id="homepage" className="lg:px-15 md:px-10 px-5 py-5 my-5 rounded-3xl drop-shadow-xl lg:col-start-3 lg:col-span-2 md:col-start-2 md:col-span-4 col-start-2 col-span-4">
                 <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
-                <p className="fs-5 fw-bold d-flex flex-column my-auto">
-                    Don't have a login?
-                    <NavButton btnText={"Register"} navigation={"/registration"} />
+                <p className="grid lg:grid-cols-3 md:grid-cols-1 grid-cols-1 text-lg my-10 items-center border-slate-800">
+                    <span className="col-span-2 mx-auto text-center" >Don't have a login?</span>
+                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="lg:col-start-3 md:col-start-3 mx-auto py-1 w-30 tracking-wide font-bold text-xl text-white/80" />
                 </p>
             </div>
-            <img src="./src/assets/globe.png" alt="earth globe" className="border border-5 border-light rounded-circle mt-5 shadow-lg"/>
         </>
     )
 }

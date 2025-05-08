@@ -29,7 +29,9 @@ export function NavigationBar(){
 
         }else if(location.pathname.includes("/registration") || location.pathname.includes("/newnation") ){
             
-            setNavSettings( prevObj => ({ ...prevObj, showBackBtn: true, showLogoutBtn: false, backNavigation: "/"  }) )
+            const isNewNationView = location.pathname.includes("/newnation");
+            const homeOrDashboard = isNewNationView ? "/dashboard" : "/";
+            setNavSettings( prevObj => ({ ...prevObj, showBackBtn: true, showLogoutBtn: isNewNationView, backNavigation: homeOrDashboard  }) )
 
         }else{
             setNavSettings( DEFAULT_SETTINGS )
@@ -39,10 +41,10 @@ export function NavigationBar(){
     }, [location.pathname])
 
     return(
-    <div className="d-flex justify-content-center border border-dark border-5 rounded-pill p-3 mb-5 bg-danger shadow" >
-        { navSettings.showBackBtn && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } /> }
-        <h1 className="fw-bold mx-5" style={ {fontSize:"4em"} } >Simulation Nation</h1>
-        { navSettings.showLogoutBtn && <LogoutButton /> }
-    </div>
+    <header id="navbar" className="flex flex-wrap justify-evenly items-center px-5 py-1 col-span-full" >
+        <div className="w-20 lg:m-0 md:mb-3 mb-3">{ navSettings.showBackBtn  && <NavButton btnText={"Back"} navigation={ navSettings.backNavigation } styleAdditons="w-20 text-white" /> }</div>
+        <p id="namheading" className="text-center text-5xl font-bold font-sans tracking-widest" >NATIONAL ASSETS MANAGER</p>
+        <div className="w-20 lg:m-0 md:mt-4 mt-4">{ navSettings.showLogoutBtn  && <LogoutButton /> }</div>
+    </header>
     )
 }
