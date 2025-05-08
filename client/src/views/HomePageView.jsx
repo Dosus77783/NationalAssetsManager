@@ -57,7 +57,7 @@ export default function HomePageView(){
                 <LoginForm formData={loginFormData} onFormChange={ onFormChange } formSubmition={ formSubmition } />
                 <p className="grid lg:grid-cols-3 md:grid-cols-1 grid-cols-1 text-lg my-10 items-center border-slate-800">
                     <span className="col-span-2 mx-auto text-center" >Don't have a login?</span>
-                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="lg:col-start-3 md:col-start-3 mx-auto py-1 w-30 tracking-wide font-bold text-xl text-white" />
+                    <NavButton btnText={"Register"} navigation={"/registration"} styleAdditons="lg:col-start-3 md:col-start-3 mx-auto py-1 w-30 tracking-wide font-bold text-xl text-white/80" />
                 </p>
             </div>
         </>

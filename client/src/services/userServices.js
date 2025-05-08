@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const SERVER_PORT = import.meta.env.VITE_SERVER_PORT;
+
 const USER_INSTANCE = axios.create({
-    baseURL:"http://localhost:8008/user/api"
+    baseURL:"http://localhost:" + SERVER_PORT + "/user/api"
 })
 
 // LOGIN

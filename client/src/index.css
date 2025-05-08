@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {    
     --color-loginbtn: #1a3163;
@@ -9,8 +8,13 @@
     --color-darkmodeborder: #32414d;
 }
 
+
+
 html[mode="dark"]{ 
-    
+    --slider-fill-taxes: #2b7fff;
+    --slider-fill-spending: #e7000b;
+    --slider-track: #364153;
+
     #background{
         @apply transition duration-500;
     }
@@ -23,35 +27,78 @@ html[mode="dark"]{
     .background-extra-fill{
         @apply bg-btnblack border-darkmodeborder
     }
-    #homepage, #registrationview, #nationformview, #nationnavbar, #nationstatsmain, #nation-heading{
+    #homepage, #registrationview, #nationformview, #nationnavbar, #nationstatsmain, #nation-heading, .section-form-header{
         @apply bg-darkmodebg border-darkmodeborder border;
     }
     #nationstatsmain{
         @apply bg-darkmodebg/50 backdrop-blur-xs;
     }
     .statscard{
-        @apply bg-darkmodebg border border-darkmodeborder rounded-xl
+        @apply bg-darkmodebg border border-darkmodeborder rounded-xl;
     }
     .income-red{
-        @apply bg-rose-800
+        @apply bg-rose-800;
     }
     .income-green{
-        @apply bg-green-700
+        @apply bg-green-700;
     }
     .government-icons{
-        @apply fill-slate-400
+        @apply fill-slate-400;
     }
     .sub-cards{
-        @apply bg-slate-700
+        @apply bg-slate-700;
+    }
+    .input-sliders-form > input{
+        @apply w-full h-2 appearance-none bg-gray-700 rounded-lg cursor-pointer transition-all duration-300;
+    }
+    .in-sl-taxes > input{
+        background: linear-gradient(
+            to right,
+            var(--slider-fill-taxes) 0%,
+            var(--slider-fill-taxes) var(--slider-fill-percent),
+            var(--slider-track) var(--slider-fill-percent),
+            var(--slider-track) 100%
+        )
+    }
+    .in-sl-spending > input{
+        background: linear-gradient(
+            to right,
+            var(--slider-fill-spending) 0%,
+            var(--slider-fill-spending) var(--slider-fill-percent),
+            var(--slider-track) var(--slider-fill-percent),
+            var(--slider-track) 100%
+        )
+    }
+    .webkit-moz-slider > input{
+        @apply 
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:size-4
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:shadow
+            [&::-moz-range-thumb]:size-4
+            [&::-moz-range-thumb]:rounded-full
+    }
+    .wk-mz-sl-taxes > input{
+        @apply
+            [&::-webkit-slider-thumb]:bg-blue-500
+            [&::-moz-range-thumb]:bg-blue-500
+    }
+    .wk-mz-sl-spending > input{
+        @apply
+            [&::-webkit-slider-thumb]:bg-red-600
+            [&::-moz-range-thumb]:bg-red-600
     }
 }
 
 html[mode="light"]{ 
+    --slider-fill-taxes: #8ec5ff;
+    --slider-fill-spending: #ff6467;
+    --slider-track: #e2e8f0;
 
     #background{
         @apply invert transition duration-500;
     }
-    #homepage, #registrationview, #nationformview, #nationnavbar, #nation-heading{
+    #homepage, #registrationview, #nationformview, #nationnavbar, #nation-heading, .section-form-header{
         @apply bg-radial from-white to-gray-100;
     }
     .dashboard{
@@ -81,6 +128,57 @@ html[mode="light"]{
     .sub-cards{
         @apply bg-blue-200/30
     }
+    .input-sliders-form > input{
+        @apply w-full h-2 appearance-none bg-slate-200 rounded-lg cursor-pointer;
+    }
+    .in-sl-taxes > input{
+        background: linear-gradient(
+            to right,
+            var(--slider-fill-taxes) 0%,
+            var(--slider-fill-taxes) var(--slider-fill-percent),
+            var(--slider-track) var(--slider-fill-percent),
+            var(--slider-track) 100%
+        )
+    }
+    .in-sl-spending > input{
+        background: linear-gradient(
+            to right,
+            var(--slider-fill-spending) 0%,
+            var(--slider-fill-spending) var(--slider-fill-percent),
+            var(--slider-track) var(--slider-fill-percent),
+            var(--slider-track) 100%
+        )
+    }
+    .webkit-moz-slider > input{
+        @apply 
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:size-4
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:shadow
+            [&::-moz-range-thumb]:size-4
+            [&::-moz-range-thumb]:rounded-full;
+    }
+    .wk-mz-sl-taxes > input{
+        @apply
+            [&::-webkit-slider-thumb]:bg-blue-300
+            [&::-moz-range-thumb]:bg-blue-300
+    }
+    .wk-mz-sl-spending > input{
+        @apply
+            [&::-webkit-slider-thumb]:bg-red-400
+            [&::-moz-range-thumb]:bg-red-400
+    }
+}
+
+.country-tooltip{
+    @apply 
+    absolute z-10 pointer-events-none 
+    -top-12 right-0 w-max mt-2 px-3 py-2 text-sm rounded shadow-lg 
+    opacity-0 group-hover:opacity-100 transition-opacity 
+    duration-300 delay-75
+}
+.change-badge{
+    @apply rounded px-1 align-middle text-xs font-normal
 }
 
 button{
@@ -90,3 +188,5 @@ button{
 #namheading{
     text-shadow: 5px 2px 5px rgba(0, 0, 0, 0.507);
 }
+
+

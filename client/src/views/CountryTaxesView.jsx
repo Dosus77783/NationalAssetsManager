@@ -19,6 +19,7 @@ export default function CountryTaxesView(){
     }
     const [ taxesData, setTaxesData ] = useState( DEFAULT_TAXES );
 
+
     useEffect( ()=>{
         if(Object.keys(user).length === 0 ){
             autoLogin()
@@ -41,6 +42,9 @@ export default function CountryTaxesView(){
     const onFormChange = (e) => {
         const { name, value } = e.target;
         setTaxesData( prevObj => ( {...prevObj, [name]: Number(value), valMsgs:{ validationErrors:{} }  } ))
+
+        const percentage = `${value * 100}%`
+        e.target.style.setProperty("--slider-fill-percent", percentage)
     }
 
     const formSubmition = (e) => {
@@ -61,8 +65,8 @@ export default function CountryTaxesView(){
 
     return(
         <>
-            <div className="border border-dark border-4 rounded mb-5 shadow-lg bg-secondary bg-opacity-75 bg-gradient">
-                <h2 className="display-4 fw-bold font-monospace">Taxes</h2>
+            <div className="section-form-header py-2 mt-5 rounded-lg drop-shadow-xl col-start-2 col-span-4">
+                <h2 className="text-4xl text-center font-bold" style={{textShadow: "1px 1px 4px rgba(0, 0, 0, 0.507)"}}>Taxes</h2>
             </div>
             <TaxesForm formData={taxesData} onFormChange={onFormChange} formSubmition={formSubmition} />
         </>

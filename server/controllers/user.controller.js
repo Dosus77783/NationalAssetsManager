@@ -66,8 +66,8 @@ export const automaticLogin = async (req, res, next) => {
         if(!req.cookies.usertoken){ throw res.status(400) }
 
         const decodedToken = jwt.decode(req.cookies.usertoken, { complete:true } );
-        console.log("Token----------",decodedToken);
-        console.log("Req.Body ------------", req.body);
+        // console.log("Token----------",decodedToken);
+        // console.log("Req.Body ------------", req.body);
         const userId = decodedToken.payload.userId;
 
         const RES = await User.findById(userId)

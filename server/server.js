@@ -28,7 +28,7 @@ const socketio = new Server(expressServer, {
     }
 })
 socketio.on( "connection", (socket) =>{
-    console.log("Client Connected: ", socket.id)
+    console.log("Client Connected Server Side: ", socket.id)
     socket.emit("welcome", "Welcome to the Server.")
     socket.on("disconnect", () => console.log("Client Disconnected: ", socket.id))
 });
@@ -39,3 +39,5 @@ restartJobs();
 expressServer.listen(PORT, () =>{
     console.log(`National Assets Manager, Port: ${PORT}`)
 });
+
+export default socketio;

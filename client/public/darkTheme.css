@@ -11,7 +11,7 @@ html[mode="dark"]{
 }
 
 html[mode="dark"]{ 
-    input, select{
+    .input-text, select{
     background-color: #11121a;
     border-color: #32414d;
     }

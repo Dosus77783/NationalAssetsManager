@@ -10,7 +10,7 @@ export default function NationForm( {formData, onFormChange, formSubmition} ){
                 <form onSubmit={ formSubmition } className="grid grid-cols-1 gap-2 text-lg">
                     <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.countryName}</p>} </div>
                     <label htmlFor="countryNameForm" className="form-label fs-4">Country Name:</label>
-                    <input name="countryName" type="text" className="border rounded-sm ps-2" id="countryNameForm" onChange={ onFormChange } value={formData.countryName} />
+                    <input name="countryName" type="text" className="border rounded-sm ps-2 input-text" id="countryNameForm" onChange={ onFormChange } value={formData.countryName} />
 
                     <div className="h-7" >{formData.valMsgs.name && <p className="font-sans font-bold text-center text-lg tracking-widest text-rose-500">{formData.valMsgs.validationErrors.government}</p>} </div>
                     <label htmlFor="govSelectForm" className="">Government Type:</label>
